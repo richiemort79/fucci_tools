@@ -1,3 +1,7 @@
+//Fucci tools is designed to manaually track Fucci labelled cells in time lapse sequences
+//Tracking is manual but the are a number of useful features including creating substack on the fly
+//and tracking a reference object at the same time
+
 //Global variables for cell tracking
 
 var cal=0;
@@ -716,6 +720,4 @@ function crop_new (image, x, y, size){
 	setBatchMode(false);
 	}
 
-//}
 //Icons used courtesy of: http://www.famfamfam.com/lab/icons/silk/
-//Richard Mort 11/11/2013
