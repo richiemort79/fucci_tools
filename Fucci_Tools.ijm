@@ -707,8 +707,8 @@ function crop_new (image, x, y, size){
 
 	Stack.setDisplayMode("composite");
 	Stack.setActiveChannels(view);
-		Stack.setDisplayMode("composite");
-		Stack.setActiveChannels(view);
+	Stack.setDisplayMode("composite");
+	Stack.setActiveChannels(view);
 	}
 
 	setBatchMode(true);
