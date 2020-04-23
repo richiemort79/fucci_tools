@@ -28,8 +28,8 @@ var view = "01010";
 var pro_time_step = 0;
 var pro_scale = 0;
 var pro_number_channels = 0;
-var	pro_channels = newArray("Cyan","Green","Red","Far Red");
-var pro_channel_order = newArray(1,2,3,4);
+var	pro_channels = newArray("Cyan","Green","Red","Far-Red","Bright");
+var pro_channel_order = newArray(1,2,3,4,5);
 var pro_view = "";
 var pro_norm = "";
 var pro_crop = 0;
@@ -61,21 +61,21 @@ profile_path = getDirectory("macros");
 //prompt for calibration of image
 	Dialog.create("Please set calibration values");
 	Dialog.addMessage("Set the scale and time step for the time-lapse");
-	Dialog.addNumber("Time Step (min):", 10);
-	Dialog.addNumber("Scale (um/px):", 0.83);
+	Dialog.addNumber("Time Step (min):", pro_time_step);
+	Dialog.addNumber("Scale (um/px):", pro_scale);
 	Dialog.addMessage("Set the order of the channels in your image (0 = no Channel)");
-	Dialog.addNumber("Cyan Channel =", 5);
-	Dialog.addNumber("Green Channel =", 4);
-	Dialog.addNumber("Red Channel = ", 2);
-	Dialog.addNumber("Far-Red =", 1);
-	Dialog.addNumber("Brightfield =", 3);
-	Dialog.addString("View while tracking?", "01010");
-	Dialog.addString("Normalise?", "01010");
+	Dialog.addNumber("Cyan Channel =", pro_channel_order[0]);
+	Dialog.addNumber("Green Channel =", pro_channel_order[1]);
+	Dialog.addNumber("Red Channel = ", pro_channel_order[2]);
+	Dialog.addNumber("Far-Red =", pro_channel_order[3]);
+	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
+	Dialog.addString("View while tracking?", pro_view);
+	Dialog.addString("Normalise?", pro_norm);
 	Dialog.addMessage("Define the dimensions of the substack");	
-	Dialog.addNumber("Substack crop size", 50);
+	Dialog.addNumber("Substack crop size", pro_crop);
 	Dialog.addMessage("Do you want to track a reference object?");
-	Dialog.addCheckbox("Moving ROI", false);
-	Dialog.addNumber("Moving ROI time step", 10);	
+	Dialog.addCheckbox("Moving ROI", pro_track);
+	Dialog.addNumber("Moving ROI time step", pro_track_step);	
 	Dialog.show();
 	time_step = Dialog.getNumber();
 	cal = Dialog.getNumber();
@@ -735,5 +735,53 @@ function crop_new (image, x, y, size){
 	selectWindow(image);
 	setBatchMode(false);
 	}
+
+function get_profile(profile_path) {
+//extracts the parameters needed for fucci_tools form fucci_tools_profile.txt if present in /Macros
+	profile = profile_path+"fucci_tools_profile.txt";
+	
+		if (File.exists(profile) == "0") {
+			print("No fucci_tools_profile.txt in your /Macros directory using defaults.............");
+		} else {
+
+//open the file as a string
+			filestring=File.openAsString(profile); 
+			row=split(filestring, "\n");
+			
+//get the values form the file
+			pro_time_step = substring(row[0],16,lengthOf(row[0]));
+			pro_scale = substring(row[1],12,lengthOf(row[1]));
+			pro_number_channels = substring(row[2],22,lengthOf(row[2]));
+			pro_channels = substring(row[3],15,lengthOf(row[3]));
+			order = substring(row[4],20,lengthOf(row[4]));
+			//make order array
+			for (i=0; i<lengthOf(order); i++) {
+				addToArray(substring(order,i,i+1),pro_channel_order,i);
+			}	
+			pro_view = substring(row[5],11,lengthOf(row[5]));
+			pro_norm = substring(row[6],11,lengthOf(row[6]));
+			pro_crop = substring(row[7],11,lengthOf(row[7]));
+			pro_track = substring(row[8],12,lengthOf(row[8]));
+			pro_track_step = substring(row[9],17,lengthOf(row[9]));
+	}
+}
+
+function addToArray(value, array, position) {
+//allows one to update existing values in an array
+//adds the value to the array at the specified position, expanding if necessary - returns the modified array
+//From Richard Wheeler - http://www.richardwheeler.net/contentpages/text.php?gallery=ImageJ_Macros&file=Array_Tools&type=ijm
+    
+    if (position < lengthOf(array)) {
+        array[position]=value;
+    } else {
+        temparray = newArray(position+1);
+        for (i=0; i<lengthOf(array); i++) {
+            temparray[i]=array[i];
+        }
+        temparray[position]=value;
+        array=temparray;
+    }
+    return array;
+}
 
 //Icons used courtesy of: http://www.famfamfam.com/lab/icons/silk/
