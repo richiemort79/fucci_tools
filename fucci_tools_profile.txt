@@ -1,10 +1,11 @@
-pro_time_step = 10
-pro_scale = 0.83
-pro_number_channels = 4
-pro_channels = "Cyan","Green","Red","Far-Red","Bright"
-pro_channel_order = 12345
-pro_view = 01010
-pro_norm = 01010
+pro_time_step = 5
+pro_scale = 0.42
+pro_number_channels = 3
+pro_channels = Cyan,Green,Red,Magenta,Grays
+pro_channel_order = 02103
+pro_view = 111
+pro_norm = 111
 pro_crop = 100
 pro_track = false
 pro_track_step = 10
+
