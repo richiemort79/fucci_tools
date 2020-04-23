@@ -3,7 +3,6 @@
 //and tracking a reference object at the same time
 
 //Global variables for cell tracking
-
 var cal=0;
 var gtrack = 1;
 var time_step = 10;//this is the image acquisition rate in minutes
@@ -28,7 +27,7 @@ var view = "01010";
 var pro_time_step = 10;
 var pro_scale = 0.83;
 var pro_number_channels = 5;
-var	pro_channels = newArray("Cyan","Green","Red","Far-Red","Bright");
+var	pro_channels = newArray("Cyan","Green","Red","Magenta","Grays");
 var pro_channel_order = newArray(1,2,3,4,5);
 var pro_view = "01100";
 var pro_norm = "01100";
@@ -44,7 +43,6 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 
 //Get locationj of fucci_tools_profile and load the setting
 profile_path = getDirectory("macros");
-
 
 //reset counter on intialise
 	counter = 1;
@@ -94,22 +92,14 @@ profile_path = getDirectory("macros");
 	moving_roi = Dialog.getCheckbox();
 	m_time_step = Dialog.getNumber();
 
-//set luts
-	Stack.setDisplayMode("color");
-	Stack.setChannel(cred);
-	run("Red");
-	Stack.setDisplayMode("color");
-	Stack.setChannel(cgreen);
-	run("Green");
-	Stack.setDisplayMode("color");
-	Stack.setChannel(ccyan);
-	run("Cyan");
-	Stack.setDisplayMode("color");
-	Stack.setChannel(cbright);
-	run("Grays");
-	Stack.setDisplayMode("color");
-	Stack.setChannel(cfred);
-	run("Magenta");
+//set luts dynamically from profile parameters
+	for (i=0; i<pro_channel_order.length; i++) {
+		if (pro_channel_order[i] > 0) {
+			Stack.setChannel(pro_channel_order[i]);
+			run(pro_channels[i]);
+		}
+	}
+
 	Stack.setDisplayMode("composite");
 	Stack.setActiveChannels(view);
 
@@ -706,16 +696,17 @@ function crop_new (image, x, y, size){
 	if (isOpen("Substack")) { } else {
 		newImage("Substack", "8-bit composite-mode", swidth, sheight, channels, 1, frames);
 		run(type+"-bit");
-		Stack.setChannel(cred);
-		run("Red");
-		Stack.setChannel(cgreen);
-		run("Green");
-		Stack.setChannel(ccyan);
-		run("Cyan");
-		Stack.setChannel(cbright);
-		run("Grays");
-		Stack.setChannel(cfred);
-		run("Magenta");
+
+//set luts dynamically from profile parameters
+		for (i=0; i<pro_channel_order.length; i++) {
+			if (pro_channel_order[i] > 0) {
+				Stack.setChannel(pro_channel_order[i]);
+				run(pro_channels[i]);
+			}
+		}
+
+	Stack.setDisplayMode("composite");
+	Stack.setActiveChannels(view);
 		Stack.setDisplayMode("composite");
 		Stack.setActiveChannels(view);
 	}
@@ -749,19 +740,28 @@ function get_profile(profile_path) {
 		} else {
 
 //open the file as a string
-			filestring=File.openAsString(profile); 
-			row=split(filestring, "\n");
+			filestring = File.openAsString(profile); 
+			row = split(filestring, "\n");
 			
 //get the values form the file
 			pro_time_step = substring(row[0],16,lengthOf(row[0]));
 			pro_scale = substring(row[1],12,lengthOf(row[1]));
 			pro_number_channels = substring(row[2],22,lengthOf(row[2]));
-			pro_channels = substring(row[3],15,lengthOf(row[3]));
+			
+			channels = substring(row[3],15,lengthOf(row[3]));
+			channels1 = split(channels,",");
+			
+			//make order array
+			for (i=0; i<lengthOf(channels1); i++) {
+				addToArray(channels1[i],pro_channels,i);
+			}	
+			
 			order = substring(row[4],20,lengthOf(row[4]));
 			//make order array
 			for (i=0; i<lengthOf(order); i++) {
 				addToArray(substring(order,i,i+1),pro_channel_order,i);
 			}	
+			
 			pro_view = substring(row[5],11,lengthOf(row[5]));
 			pro_norm = substring(row[6],11,lengthOf(row[6]));
 			pro_crop = substring(row[7],11,lengthOf(row[7]));
