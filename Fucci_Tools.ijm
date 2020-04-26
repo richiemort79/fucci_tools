@@ -41,9 +41,6 @@ macro "Initialize Action Tool - CeefD25D4cD52Dd6CdddD18CfffD00D01D02D03D0cD0dD0e
 //Must be set up for black background
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 
-//Get locationj of fucci_tools_profile and load the setting
-profile_path = getDirectory("macros");
-
 //reset counter on intialise
 	counter = 1;
 
@@ -56,7 +53,7 @@ profile_path = getDirectory("macros");
 	count = 1;
 	getDimensions(width, height, channels, slices, frames);
 
-//Get locationn of fucci_tools_profile and load the settings
+//Get location of fucci_tools_profile and load the settings
 	profile_path = getDirectory("macros");
 	get_profile(profile_path);
 
