@@ -3,13 +3,27 @@
 //and tracking a reference object at the same time
 
 //Global variables for cell tracking
-var cal=0;
 var gtrack = 1;
+var number = 1;
+
+//Global variables for mitosis tracking
+var is_seed = true;//are we on a seed track or a daughter track?
+var daughter = "";//this is either a or b and is appended to gtrack in the results table
+var mitosis_frame = "";//remember when the mitosis happened so we can go back to track the second daughter
+var mitosis_x = 0; //remember where the mitosis happened so we can go back to track the second daughter
+var mitosis_y = 0; //remember where the mitosis happened so we can go back to track the second daughter
+var mitosis = "";//string to print to table
+var last_line = "";//keep record of last entry in table
+
+//Global calibration variables
 var time_step = 10;//this is the image acquisition rate in minutes
-var cal = 0;//This is the resolution of the image in micron/px
-var	xpoints =newArray();//the extent of the ROI
-var ypoints =newArray();//the extent of the ROI
+var cal = 0.619;//This is the resolution of the image in micron/px
+
+//Global variables for ROI tracking
 var shortest = 100000;
+var	xpoints = newArray();//the extent of the ROI
+var ypoints = newArray();//the extent of the ROI
+
 var Image = "";
 var moving_roi = true;
 var m_time_step = 10;
@@ -107,30 +121,6 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 		run("Select None");
 		setTool("Line");
 		waitForUser("Select a Region of Interest", "Please define your ROI and press OK");
-
-//save snapshots frame 1 and last
-		setSlice(1);
-		Stack.setDisplayMode("composite");//do I need this line?
-		run("RGB Color", "keep");
-		run("Colors...", "foreground=cyan background=cyan selection=cyan");
-		run("Restore Selection");
-		run("Draw");
-		run("Select None");
-		saveAs("Tiff", dir+Image+"_ROI_First.tif");
-		selectWindow(Image+"_ROI_First.tif");
-		run("Close");
-
-//run("Select None");
-		setSlice(slices);
-		Stack.setDisplayMode("composite");//do i need this line
-		run("RGB Color", "keep");
-		run("Colors...", "foreground=cyan background=cyan selection=cyan");
-		run("Restore Selection");
-		run("Draw");
-		run("Select None");
-		saveAs("Tiff", dir+Image+"_ROI_Last.tif");
-		selectWindow(Image+"_ROI_Last.tif");
-		run("Close");
 
 //get the skeleton of the condensate
 		selectWindow(Image);
