@@ -147,8 +147,39 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     Stack.getDimensions(width, height, channels, slices, frames);		
     Stack.setDisplayMode("composite");
     Stack.setActiveChannels(view);
+
+//some variables
+	track = toString(gtrack)+toString(daughter);
+    //print(track);
+    slice = getSliceNumber();
+    
+    
+    width = getWidth();
+    height = getHeight();
+
+//draws the tracking table
+    requires("1.41g");
+	title1 = Image+"_Tracking Table";
+	title2 = "["+title1+"]";
+	f = title2;
+
+	if (isOpen(title1)) {
+	}
+		else {
+			run("Table...", "name="+title2+" width=1000 height=300");
+			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tSlice\tCh\tX\tY\tFollicle_COMX\tFollicle_COMY\tDistance_from_COM_(um)\tInside?");
+		}   
+    
     autoUpdate(false);
     getCursorLoc(x, y, z, flags);
+
+    //makePoint(x, y);
+    makeOval(x-1,y-1,3,3);
+	run("Add Selection...");
+	makePoint(x, y);
+    wait(300);
+    //run("Colors...", "foreground=white background=white selection=red");
+    run("Enlarge...", "enlarge=5");
 
 //get nearest distance to the skeleton
 	posx = x;
@@ -179,6 +210,13 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	} else {
 		status = "";
 	}
+
+//measure the cilia
+
+//print results to the tracking table
+	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist+"\t"+inside);
+	last_line = ""+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist+"\t"+inside;
+	
     counter++;
     crop_new(Image, x, y, csize);
     Stack.setActiveChannels(view);
