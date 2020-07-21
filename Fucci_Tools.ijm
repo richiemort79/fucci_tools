@@ -21,7 +21,7 @@ var posy = 0;//position you click
 var time_step = 10;//this is the image acquisition rate in minutes
 var cal = 0.619;//This is the resolution of the image in micron/px
 
-//Global variables for ROI tracking
+//Global variables for cilia tracking
 var shortest = 100000;
 var	xpoints = newArray();//the extent of the ROI
 var ypoints = newArray();//the extent of the ROI
@@ -58,6 +58,18 @@ var	c_straightness = 0;
 var	c_kurtosis = 0;
 var	c_skewness = 0;
 var	c_angle = 0;
+
+//Gloabal variables for intensities
+var ch1_mean = 0;
+var ch2_mean = 0;
+var ch3_mean = 0;
+var ch4_mean = 0;
+var ch5_mean = 0;
+var ch1_int = 0;
+var ch2_int = 0;
+var ch3_int = 0;
+var ch4_int = 0;
+var ch5_int = 0;
 
 macro "Initialize Action Tool - CeefD25D4cD52Dd6CdddD18CfffD00D01D02D03D0cD0dD0eD0fD10D11D1eD1fD20D27D28D2fD30D35D3aD3fD44D4bD53D5cD72D82Da3DacDb4DbbDc0Dc5DcaDcfDd0Dd7DdfDe0De1DeeDefDf0Df1Df2Df3DfcDfdDfeDffCcccDd4CfffD26D39D62D7dD92Db3Dc4Dc6Dd8CdefD22D2dDd2DddCaaaDe7CeffD04D0bD29D37D38D40D45D4fD54D55D64D6cD73D7bD83D8aD8dD99D9cDa8Db0DbfDc9Df4DfbCdefD5bD6aD6bDa9Db7Db8CcdfD14D41Db1CfffD12D1dD21D2eD34D36D43D63D93Dd1DdeDe2DedCdefD05D0aD13D1cD31D3eD50D5fDa0DafDc1DceDe3DecDf5DfaC58cD97CeefD46D47D56D65D84CdeeD9dCbdfDebCbcdDadCeefD49D4aD58D59D5aD67D68D69D6dD7cD8cDa5Da6Db5Db6Dc7Dc8CcefD06D09D60D6fD90D9fDf6Df9C58cD75D76D77D78D79D86D87D88CeefD48D57D66D94D95Da4CddeD24D42Dd5CcdeD3dCbbcD3cDe6C9aaDbdCeeeD2aCbdfD07D08D70D7fD80D8fDf7Df8CaceD96CeffD3bCdddD71CccdDe5CabbDe9C999D7eD8eCdefD8bD9aD9bDaaDabDb9DbaCcdfD1bDe4CbcdDcdDdcCddeD15D51CcdeD1aDa1Dc2Dd3CbbdDaeCaabD9eDdbCeeeDa2CbdeDa7DbeCdddD17D19D81CccdDc3CaabD6eC9aaDccCdefD23D32CcdfD4eCbcdDdaCcdeD2cCaaaDe8CbceD74D85CddeD16D33D61D91CcddD5dDb2CbbbD4dCbcdD5eDeaCdeeDbcDcbDd9CccdD2b"
 {
@@ -175,7 +187,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	}
 		else {
 			run("Table...", "name="+title2+" width=1000 height=300");
-			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tSlice\tCh\tX\tY\tFollicle_COMX\tFollicle_COMY\tDistance_from_COM_(um)\tInside?");
+			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tSlice\tX\tY\tCh1 M\tCh2 M\tCh3 M\tCh4 M\tCh5 M\tCh1 I\tCh2 I\tCh3 I\tCh4 I\tCh5 I\tCilia_COMX\tCilia_COMY\tDistance_from_Cilia_(um)\tC. Length\tFeret\tStraightness\tKurt\tSkew\tAngle");
 		}   
     
     autoUpdate(false);
@@ -224,8 +236,8 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	measure_cilia();
 
 //print results to the tracking table
-	print(f,(number++)+"\t"+Image+"\t"+gtrack+"\t"+is_seed+"\t"+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist+"\t"+inside);
-	last_line = ""+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist+"\t"+inside;
+	print(f,(number++)+"\t"+Image+"\t"+gtrack+"\t"+is_seed+"\t"+(slice)+"\t"+Slice+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
+	last_line = ""+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist;
 	
     counter++;
     crop_new(Image, x, y, csize);
@@ -563,7 +575,8 @@ macro "Parse to mdf2 Action Tool - CfffD00D0eD0fD10D14D15D16D17D18D19D1aD1bD1cD1
 }
 
 function fucci_measure(image, x, y, dia) {
-//measures each channel in a hyperstack and returns in an array
+//measures each channel in a hyperstack and updates the global bvariables
+//*************modifiy for varying channel number************************
 
 	x1=x-(dia/2);
     y1=y-(dia/2);
@@ -578,6 +591,18 @@ function fucci_measure(image, x, y, dia) {
 		makeOval(x1, y1, dia, dia);
 		run("Measure");	
 		}
+		ch1_mean = getResult("Mean", 0);
+		ch2_mean = getResult("Mean", 1);
+		ch3_mean = getResult("Mean", 2);
+		ch4_mean = getResult("Mean", 3);
+		ch5_mean = getResult("Mean", 4);
+		ch1_int = getResult("IntDen", 0);
+		ch2_int = getResult("IntDen", 1);
+		ch3_int = getResult("IntDen", 2);
+		ch4_int = getResult("IntDen", 3);
+		ch5_int = getResult("IntDen", 4);	
+		selectWindow("Results");
+		run("Close");
 }
 
 function zero_time (array) {
