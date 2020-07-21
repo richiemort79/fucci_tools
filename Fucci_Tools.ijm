@@ -212,14 +212,14 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	
 //measure fucci
     fucci_measure(Image, x, y, 10);
-   	for (i=1; i<=channels; i++) {
-   		row = nResults - i;
-   		setResult("Track", row, gtrack);
-   		if (moving_roi == true) {
-   			setResult("Dis. from COM", row, dist);
-   			setResult("Info", row, status);
-   		}   	
-   	}
+ //  	for (i=1; i<=channels; i++) {
+ //  		row = nResults - i;
+ //  		setResult("Track", row, gtrack);
+ //  		if (moving_roi == true) {
+ //  			setResult("Dis. from COM", row, dist);
+ //  			setResult("Info", row, status);
+ //  		}   	
+ //  	}
 
 //measure cilia if option is selcted in dialog
 	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
@@ -236,7 +236,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	measure_cilia();
 
 //print results to the tracking table
-	print(f,(number++)+"\t"+Image+"\t"+gtrack+"\t"+is_seed+"\t"+(slice)+"\t"+Slice+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
+	print(f,(number++)+"\t"+Image+"\t"+gtrack+"\t"+is_seed+"\t"+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
 	last_line = ""+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist;
 	
     counter++;
