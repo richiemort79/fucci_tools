@@ -25,9 +25,12 @@ var cal = 0.619;//This is the resolution of the image in micron/px
 var shortest = 100000;
 var	xpoints = newArray();//the extent of the ROI
 var ypoints = newArray();//the extent of the ROI
+var dist = 0;
 
 var com_roi_x = 0; 
 var com_roi_y = 0; 
+
+var f = "";
 
 var Image = "";
 var moving_roi = true;
@@ -178,7 +181,6 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     //print(track);
     slice = getSliceNumber();
     
-    
     width = getWidth();
     height = getHeight();
 
@@ -192,28 +194,29 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	}
 		else {
 			run("Table...", "name="+title2+" width=1000 height=300");
-			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tSlice\tX\tY\tCh1 M\tCh2 M\tCh3 M\tCh4 M\tCh5 M\tCh1 I\tCh2 I\tCh3 I\tCh4 I\tCh5 I\tCilia_COMX\tCilia_COMY\tDistance_from_Cilia_(um)\tC. Length\tFeret\tStraightness\tKurt\tSkew\tAngle");
+			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tX\tY\tCh1 M\tCh2 M\tCh3 M\tCh4 M\tCh5 M\tCh1 I\tCh2 I\tCh3 I\tCh4 I\tCh5 I\tCilia_COMX\tCilia_COMY\tDistance_from_Cilia_(um)\tC. Length\tFeret\tStraightness\tKurt\tSkew\tAngle");
 		}   
     
     autoUpdate(false);
     getCursorLoc(x, y, z, flags);
-
+    crop_new(Image, x, y, csize);
+    run("Colors...", "foreground=white background=white selection=cyan");
     //makePoint(x, y);
     makeOval(x-1,y-1,3,3);
 	run("Add Selection...");
 	makePoint(x, y);
     wait(300);
-    //run("Colors...", "foreground=white background=white selection=red");
+    
     run("Enlarge...", "enlarge=5");
 
 //get nearest distance to the skeleton
-	posx = x;
-	posy = y;
+//	posx = x;
+//	posy = y;
 	
-	if (moving_roi == true) {
-		get_s_dist(x, y, xpoints, ypoints);
-		dist = shortest;
-	}
+///	if (moving_roi == true) {
+//		get_s_dist(x, y, xpoints, ypoints);
+//		dist = shortest;
+//	}
 	
 //measure fucci
     fucci_measure(Image, x, y, 10);
@@ -244,15 +247,12 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	if (moving_roi == true) {
 		get_s_dist(x, y, xpoints, ypoints);
 		dist = shortest;
-	
-
 //measure the cilia
-	measure_cilia();
+		measure_cilia();
 	}
 
-
     counter++;
-    crop_new(Image, x, y, csize);
+    //crop_new(Image, x, y, csize);
     Stack.setActiveChannels(view);
     Stack.getPosition(channel, slice, frame);
     Stack.setPosition(channel, slice, frame+1);
@@ -261,8 +261,9 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     run("Select None");
 
 //print results to the tracking table
-	print(f,(number++)+"\t"+Image+"\t"+gtrack+"\t"+is_seed+"\t"+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
-	last_line = ""+(slice)+"\t"+"1"+"\t"+"1"+"\t"+(x)+"\t"+(y)+"\t"+(com_roi_x)+"\t"+(com_roi_y)+"\t"+dist;
+
+	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
+	last_line = ""+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
 	  
 }
 
@@ -276,13 +277,28 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     	rename("Track_"+gtrack-1+"_Substack");
     } else {}
     waitForUser("A new track ("+gtrack+") has been added to the analysis. If it exists the substack has been renamed as Track_"+gtrack-1+"_Substack. Please select the tracking button and continue");
+    
+    
+    gtrack++;
+	is_seed = true;//are we on a seed track or a daughter track?
+ 	daughter = "";//this is either a or b and is appended to gtrack in the results table
+	mitosis_frame = 0;//remember when the mitosis happened so we can go back to track the second daughter
+	mitosis = "";//forget this string
+    waitForUser("A new track ("+gtrack+") has been added to the analysis. Please select the tracking button and continue");
     setSlice(1);
+
 }
 
 
 macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD0fD10D11D12D13D14D15D16D17D1dD1eD1fD20D21D22D23D24D25D2eD2fD30D31D32D33D34D3fD40D41D42D43D44D4fD50D51D52D53D5eD5fD60D69D6aD6dD6eD6fD70D78D79D7aD7cD7dD7eD7fD80D88D89D8aD8cD8dD8eD8fD90D99D9aD9dD9eD9fDa0Da1Da2Da3DaeDafDb0Db1Db2Db3Db4DbfDc0Dc1Dc2Dc3Dc4DcfDd0Dd1Dd2Dd3Dd4Dd5DdeDdfDe0De1De2De3De4De5De6De7DedDeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfcDfdDfeDffC8c8Db7C6b6D27D28CacaDfbC494DaaC9c9D98C7b7D6bD72D76D82D83CbeaD3eC483D63Dd7Dd8C9c8D56D57D66Db9DbaDcaDcbDccC7b7D46D77D86CadaD1cC6a6D67D95DdcC9d9D48C8c7D1bD2cD4dCefeD35C373D61C8c8D2bD3dDc9C7b6D58D65D9bDabDacDbdDc7DcdCadaD4bD4cDceC695DebC9c9DddC7c7D73CcdcDa4C484D94C8a7Db5CbdaD7bC6a6DdbCad9D38D39D49D4aD6cCefeD18D19D1aDeaC372D71C8b8DecC6b6D29Cad9D3aC5a5D36C9c9D47D9cDbbDbcC8c7D5bCbdbDd6C484Dd9CadaD2dD3bD3cD5dCefeDe9C373D62D93Da5Dc6CadaD8bC6a5D5aCac9D68DadC8c7D5cD74D84D85Da6Da7CeeeDc5De8C494D55Da9DdaCbdaD4eC7a7D87C272D81D92C8c8D37D75D96Db8Dc8C594D64CbebD0bC6a5D97Da8Db6CdedD54C9b8D45C7b6D2aCadaDbeC5a5D59CcecD26"
 {	
 	is_seed = false;//are we on a seed track or a daughter track?
+
+	if (isOpen("Substack")) { 
+    	selectWindow("Substack"); 
+    	rename("Track_"+track+"_Substack");
+    } else {}
+	
 	if (daughter == "") {
 		daughter = "a";//this is either a or b and is appended to gtrack in the results table
 		run("Colors...", "foreground=white background=white selection=red");
@@ -310,6 +326,11 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
     //run("Colors...", "foreground=white background=white selection=cyan");
     run("Enlarge...", "enlarge=15");
 
+	if (isOpen("Substack")) { 
+    	selectWindow("Substack"); 
+    	rename("Track_"+track+"_Substack");
+    } else {}
+	
 	if (daughter == "") {
 		daughter = "a";//this is either a or b and is appended to gtrack in the results table
 	} else if (daughter == "a"){
