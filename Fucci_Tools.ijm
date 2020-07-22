@@ -252,6 +252,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     wait(300);
     
     run("Enlarge...", "enlarge=5");
+    run("Add Selection...");
     counter++;
     //crop_new(Image, x, y, csize);
     Stack.setActiveChannels(view);
@@ -709,7 +710,7 @@ function get_skel_xy(image) {
 	if (sel == -1) {exit("There is no line or area selection");}
 	if ( sel == 10 || sel == 5 || sel == 6 || sel == 7){run("Line to Area");}
 
-			run("Colors...", "foreground=white background=white selection=cyan");
+			//run("Colors...", "foreground=white background=white selection=cyan");
 			getDimensions(width, height, channels, slices, frames);
 			newImage("skeleton", "8-bit black", width, height, 1);
 			run("Restore Selection");
