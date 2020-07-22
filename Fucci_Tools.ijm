@@ -169,6 +169,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 //}
 	    run("Remove Overlay");
 	    run("Colors...", "foreground=white background=white selection=cyan");
+	    run("Overlay Options...", "stroke=cyan width=0 fill=none");
 }
 
 macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11D12D13D14D15D16D17D19D1bD1cD1dD1eD1fD20D21D22D23D24D25D26D2bD2cD2dD2eD2fD30D31D32D33D34D39D3eD3fD40D41D42D43D50D51D52D53D58D59D5aD5bD5cD5dD5eD60D61D62D68D6eD70D71D77D78D7eD84D87D88D8eD8fD91D93D96D97D98D9eD9fDa3Da6Db0Db1Db2Db3Db4Db5Db6Dc0Dc1Dc2Dc3Dc4Dc5Dc6Dc7Dd0Dd1Dd2Dd3Dd4Dd5Dd6Dd7Dd8DdfDe0De1De2De3De4De5De6De7De8DeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfdDfeDffC777D08D09D0aD18D1aD29D2aD35D44D56D80D81D90D92Da0Da1Da2C9beD57C888D28D46D55D82C481Dd9C8beD75D94C58dC6a3D69Da8C9beD85Da4C999D27D36D37D38D54D63D64D72D73D74D83C280DaeDfaC48dD3dD4dC8beCac8D9cDcaC593DadC8beD66C69dD47D65C777D45C7aeD5fD6fC270DafDecDfbC48dD4eC9c8DbdDccC592D6cC59dD67C6a4DdaCbc9D7aC380D9dC48dCac9D7bD7cD8aD9aDaaDb9C5a3DebC69eC8b6DbcC170DbfDceDddDdeDedDfcC47dD4fC592D6dC59dC7a3Da7C380DeaCac8D8cC6a3D6aD79D89C69eD76D86D95Da5C8b6DabDbbDcbC9c8DdbC693D6bD99Db7C59eD3cD4cC7a5Da9C381De9C6a4DcdC7aeD3bD48D4bC9b7DbaC491D7dC59eC7a4Dc9C5a4DbeC6aeC8b6D8bD9bC592Dc8C9c8DacC8b5Db8C481D8dC6a4Ddc" {
@@ -289,6 +290,7 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     waitForUser("A new track ("+gtrack+") has been added to the analysis. Please select the tracking button and continue");
     setSlice(1);
 	run("Colors...", "foreground=white background=white selection=cyan");
+	run("Overlay Options...", "stroke=cyan width=0 fill=none");
 	run("Remove Overlay");
 }
 
@@ -305,9 +307,11 @@ macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD
 	if (daughter == "") {
 		daughter = "a";//this is either a or b and is appended to gtrack in the results table
 		run("Colors...", "foreground=white background=white selection=red");
+		run("Overlay Options...", "stroke=red width=0 fill=none");
 	} else if (daughter == "a"){
 		daughter = "b";
 		run("Colors...", "foreground=white background=white selection=yellow");
+		run("Overlay Options...", "stroke=yellow width=0 fill=none");
 	}
 	mslice = getSliceNumber();
 	mitosis_frame = mslice;//remember when the mitosis happened so we can go back to track the second daughter
@@ -323,11 +327,6 @@ macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD
 
 macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD10D11D12D17D18D1dD1eD1fD20D21D22D27D28D2dD2eD2fD30D31D32D3dD3eD3fD40D41D42D4dD4eD4fD50D51D52D5dD5eD5fD60D61D62D6dD6eD6fD70D71D72D7dD7eD7fD80D81D82D8dD8eD8fD90D91D92D9dD9eD9fDa0Da1Da7Da8DaeDafDb0DbfDc0Dc1DceDcfDd0Dd1Dd2Dd7Dd8DddDdeDdfDe0De1De2De3De6De7De8De9DecDedDeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC594D0bD29D39Db2CcdcD6cDadC9c9DabDbbDcaC383D4cCcebD14D15D24D34C8b8D8bC5a4D0aD93CdedDa2CacaD47D48C464DdcCcdcD97C7b7D5aC695De5CdedD63C9c9D8aD9aC474DdbC9c8D1aD1bD2aD84D85D95Da4Da5Db4DcbC6a5Da3CfffD37D38CbdaD66D67C362Db8C7b6D83D86C595D59D75D76D96Db6Dc6Dd4Dd5C9c9D54D94D9bDaaDbaC483D2cC8c8D2bD3aDb5Dc4C5a5D09D26CadaD56D78C474Dc8DccC7b7Db3C695D5cD7bCac9D65D73C584D6aD99C6b5D03D04D05D13D23D33CbebD25D35D44D45C262Da9C6a6D49D5bD64D74C595Dd6C483D3cD87Da6C8c8D3bD4aDc5C5a4D19CadaD68D79C373D88C8a8D7cC484DdaC6b5D06CbdbD55C373Db7C494D0cD1cC6a5D16D43C474DeaDebC8b7D46D53Db1Cad9D7aC585Dc9C252D9cC6a6Dd3C8c8D4bC474D8cDd9C8b7D69D77D89C575DbeC363DacC484D58C363DcdC5a5D36C484Dc7C6a5Dc3C373D6bC585Db9C696De4C7b7D57C6a6Dc2"
 {
-	run("Colors...", "foreground=white background=white selection=yellow");
-	setSlice(mitosis_frame);
-	makePoint(mitosis_x, mitosis_y);
-    //run("Colors...", "foreground=white background=white selection=cyan");
-    run("Enlarge...", "enlarge=15");
 
 	if (isOpen("Substack")) { 
     	selectWindow("Substack"); 
@@ -339,6 +338,15 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
 	} else if (daughter == "a"){
 		daughter = "b";
 	}
+	selectWindow(Image);
+	run("Colors...", "foreground=white background=white selection=yellow");
+	run("Overlay Options...", "stroke=yellow width=0 fill=none");
+	setSlice(mitosis_frame);
+	makePoint(mitosis_x, mitosis_y);
+    //run("Colors...", "foreground=white background=white selection=cyan");
+    run("Enlarge...", "enlarge=25");
+    run("Add Selection...");
+	
 	waitForUser("The track has switched to "+gtrack+daughter);
 	print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
 }
