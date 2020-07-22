@@ -31,6 +31,7 @@ var dist = 0;
 var com_roi_x = 0; 
 var com_roi_y = 0; 
 
+//Global variable for results table
 var f = "";
 
 var Image = "";
@@ -142,34 +143,9 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 
 	Stack.setDisplayMode("composite");
 	Stack.setActiveChannels(view);
-
-//prompt user to define the region of interest
-//	if (moving_roi == true) {
-//		run("Colors...", "foreground=white background=black selection=cyan");
-//		setSlice(frames);
-//		run("Select None");
-	//	setTool("polyline");
-	//	waitForUser("Select a Region of Interest", "Please define your Cilia and press OK");
-
-//get the skeleton of the ROI
-//		selectWindow(Image);
-//		run("Restore Selection");
-
-//		if (isOpen("Results")){
-//			selectWindow("Results");
-//			run("Close");
-//		}
-
-//get the skeleton of the ROI
-	//	selectWindow(Image);
-	//	run("Restore Selection");
-
-	//	get_skel_xy(Image);
-
-//}
-	    run("Remove Overlay");
-	    run("Colors...", "foreground=white background=white selection=cyan");
-	    run("Overlay Options...", "stroke=cyan width=0 fill=none");
+	run("Remove Overlay");
+	run("Colors...", "foreground=white background=white selection=cyan");
+	run("Overlay Options...", "stroke=cyan width=0 fill=none");
 }
 
 macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11D12D13D14D15D16D17D19D1bD1cD1dD1eD1fD20D21D22D23D24D25D26D2bD2cD2dD2eD2fD30D31D32D33D34D39D3eD3fD40D41D42D43D50D51D52D53D58D59D5aD5bD5cD5dD5eD60D61D62D68D6eD70D71D77D78D7eD84D87D88D8eD8fD91D93D96D97D98D9eD9fDa3Da6Db0Db1Db2Db3Db4Db5Db6Dc0Dc1Dc2Dc3Dc4Dc5Dc6Dc7Dd0Dd1Dd2Dd3Dd4Dd5Dd6Dd7Dd8DdfDe0De1De2De3De4De5De6De7De8DeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfdDfeDffC777D08D09D0aD18D1aD29D2aD35D44D56D80D81D90D92Da0Da1Da2C9beD57C888D28D46D55D82C481Dd9C8beD75D94C58dC6a3D69Da8C9beD85Da4C999D27D36D37D38D54D63D64D72D73D74D83C280DaeDfaC48dD3dD4dC8beCac8D9cDcaC593DadC8beD66C69dD47D65C777D45C7aeD5fD6fC270DafDecDfbC48dD4eC9c8DbdDccC592D6cC59dD67C6a4DdaCbc9D7aC380D9dC48dCac9D7bD7cD8aD9aDaaDb9C5a3DebC69eC8b6DbcC170DbfDceDddDdeDedDfcC47dD4fC592D6dC59dC7a3Da7C380DeaCac8D8cC6a3D6aD79D89C69eD76D86D95Da5C8b6DabDbbDcbC9c8DdbC693D6bD99Db7C59eD3cD4cC7a5Da9C381De9C6a4DcdC7aeD3bD48D4bC9b7DbaC491D7dC59eC7a4Dc9C5a4DbeC6aeC8b6D8bD9bC592Dc8C9c8DacC8b5Db8C481D8dC6a4Ddc" {
@@ -208,63 +184,42 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	posx = x;
 	posy = y;
 	
-///	if (moving_roi == true) {
-//		get_s_dist(x, y, xpoints, ypoints);
-//		dist = shortest;
-//	}
-	
 //measure fucci
     fucci_measure(Image, x, y, 10);
- //  	for (i=1; i<=channels; i++) {
- //  		row = nResults - i;
- //  		setResult("Track", row, gtrack);
- //  		if (moving_roi == true) {
- //  			setResult("Dis. from COM", row, dist);
- //  			setResult("Info", row, status);
- //  		}   	
- //  	}
 
 //measure cilia if option is selected in dialog
-//	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
-	if (moving_roi == true){
+	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
+	//if (moving_roi == true){
 		run("Select None");
 		setTool("polyline");
+		Stack.setDisplayMode("composite");
+		Stack.setActiveChannels(view);
 		waitForUser("Select a Region of Interest", "Please define the Cilia and press OK");
 		measure_cilia();
 		get_skel_xy(Image);
-		//status = "ROI Reset";
 		posx = x;
 		posy = y;
 		get_s_dist(x, y, xpoints, ypoints);
 		dist = shortest;
-//measure the cilia
-		
 	
 	} else {
 		status = "";
 	}
-//return abck to measure/track tool
+
+//return back to measure/track tool
 	setTool("Interactive Measure Channel Tool");
-	
-	//makePoint(x, y);
     makeOval(x-1,y-1,3,3);
 	run("Add Selection...");
 	makePoint(x, y);
     wait(300);
-    
     run("Enlarge...", "enlarge=5");
-    //run("Add Selection...");
     counter++;
-    //crop_new(Image, x, y, csize);
-    Stack.setActiveChannels(view);
     Stack.getPosition(channel, slice, frame);
     Stack.setPosition(channel, slice, frame+1);
     Stack.setDisplayMode("composite");
     Stack.setActiveChannels(view);
-    //run("Select None");
 
 //print results to the tracking table
-
 	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
 	last_line = ""+(slice)+"\t"+x+"\t"+y+"\t"+ch1_mean+"\t"+ch2_mean+"\t"+ch3_mean+"\t"+ch4_mean+"\t"+ch5_mean+"\t"+ch1_int+"\t"+ch2_int+"\t"+ch3_int+"\t"+ch4_int+"\t"+ch5_int+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
 	  
@@ -280,8 +235,6 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     	rename("Track_"+gtrack-1+"_Substack");
     } else {}
     waitForUser("A new track ("+gtrack+") has been added to the analysis. If it exists the substack has been renamed as Track_"+gtrack-1+"_Substack. Please select the tracking button and continue");
-    
-    
     gtrack++;
 	is_seed = true;//are we on a seed track or a daughter track?
  	daughter = "";//this is either a or b and is appended to gtrack in the results table
@@ -318,7 +271,6 @@ macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD
 	mitosis_x =	posx;
 	mitosis_y = posy;
 	waitForUser("A mitosis has been recorded and the track has switched to "+gtrack+daughter);
-
 	//get the last line of the table to use as the first timepoint
 	mitosis = last_line;
 	print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
@@ -429,12 +381,6 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
     			}
     	else{};
 	}
-
-//Set up the graph
-	//Plot.create("Track"+track_number[q]+" Normalised Intensity Plot", "Time (minutes)", "Normalised Integrated Density");
-	//Plot.setFrameSize(800, 400);
-	//Plot.setLimits((min_frame*time_step), (max_frame*time_step), 0, 5000);
-	//Plot.setLineWidth(1);
 
 //Extract values and plot on graph
 
@@ -624,8 +570,8 @@ macro "Parse to mdf2 Action Tool - CfffD00D0eD0fD10D14D15D16D17D18D19D1aD1bD1cD1
 }
 
 function fucci_measure(image, x, y, dia) {
-//measures each channel in a hyperstack and updates the global bvariables
-//*************modifiy for varying channel number************************
+//measures each channel in a hyperstack and updates the global variables
+//*************modifiy for varying channel number***********************
 
 	x1=x-(dia/2);
     y1=y-(dia/2);
