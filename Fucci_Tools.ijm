@@ -188,8 +188,8 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     fucci_measure(Image, x, y, 10);
 
 //measure cilia if option is selected in dialog
-	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
-	//if (moving_roi == true){
+	//if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
+	if (moving_roi == true){
 		run("Select None");
 		setTool("polyline");
 		Stack.setDisplayMode("composite");
@@ -571,7 +571,7 @@ macro "Parse to mdf2 Action Tool - CfffD00D0eD0fD10D14D15D16D17D18D19D1aD1bD1cD1
 
 function fucci_measure(image, x, y, dia) {
 //measures each channel in a hyperstack and updates the global variables
-//*************modifiy for varying channel number***********************
+//*************modifiy for varying channel number************************
 
 	x1=x-(dia/2);
     y1=y-(dia/2);
