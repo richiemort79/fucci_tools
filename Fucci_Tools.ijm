@@ -144,29 +144,29 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	Stack.setActiveChannels(view);
 
 //prompt user to define the region of interest
-	if (moving_roi == true) {
-		run("Colors...", "foreground=white background=black selection=cyan");
-		setSlice(frames);
-		run("Select None");
-		setTool("polyline");
-		waitForUser("Select a Region of Interest", "Please define your Cilia and press OK");
+//	if (moving_roi == true) {
+//		run("Colors...", "foreground=white background=black selection=cyan");
+//		setSlice(frames);
+//		run("Select None");
+	//	setTool("polyline");
+	//	waitForUser("Select a Region of Interest", "Please define your Cilia and press OK");
 
 //get the skeleton of the ROI
-		selectWindow(Image);
-		run("Restore Selection");
+//		selectWindow(Image);
+//		run("Restore Selection");
 
-		if (isOpen("Results")){
-			selectWindow("Results");
-			run("Close");
-		}
+//		if (isOpen("Results")){
+//			selectWindow("Results");
+//			run("Close");
+//		}
 
 //get the skeleton of the ROI
-		selectWindow(Image);
-		run("Restore Selection");
+	//	selectWindow(Image);
+	//	run("Restore Selection");
 
-		get_skel_xy(Image);
+	//	get_skel_xy(Image);
 
-}
+//}
 	    run("Remove Overlay");
 	    run("Colors...", "foreground=white background=white selection=cyan");
 }
