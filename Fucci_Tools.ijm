@@ -167,6 +167,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 		get_skel_xy(Image);
 
 }
+	    run("Remove Overlay");
 	    run("Colors...", "foreground=white background=white selection=cyan");
 }
 
@@ -288,6 +289,7 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     waitForUser("A new track ("+gtrack+") has been added to the analysis. Please select the tracking button and continue");
     setSlice(1);
 	run("Colors...", "foreground=white background=white selection=cyan");
+	run("Remove Overlay");
 }
 
 
