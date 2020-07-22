@@ -196,20 +196,12 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	}
 		else {
 			run("Table...", "name="+title2+" width=1000 height=300");
-			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tX\tY\tCh1 M\tCh2 M\tCh3 M\tCh4 M\tCh5 M\tCh1 I\tCh2 I\tCh3 I\tCh4 I\tCh5 I\tCilia_COMX\tCilia_COMY\tDistance_from_Cilia_(um)\tC. Length\tFeret\tStraightness\tKurt\tSkew\tAngle");
+			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tX\tY\tCh1_Mean\tCh2_Mean\tCh3_Mean\tCh4_Mean\tCh5_Mean\tCh1_Int\tCh2_Int\tCh3_Int\tCh4_Int\tCh5_Int\tCilia_COMX\tCilia_COMY\tDistance_to_Cilia_(um)\tLength\tFeret\tStraightness\tKurt\tSkew\tAngle");
 		}   
     
     autoUpdate(false);
     getCursorLoc(x, y, z, flags);
     crop_new(Image, x, y, csize);
-
-    //makePoint(x, y);
-    makeOval(x-1,y-1,3,3);
-	run("Add Selection...");
-	makePoint(x, y);
-    wait(300);
-    
-    run("Enlarge...", "enlarge=5");
 
 //get nearest distance to the skeleton
 //	posx = x;
@@ -231,28 +223,35 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
  //  		}   	
  //  	}
 
-//measure cilia if option is selcted in dialog
-	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
+//measure cilia if option is selected in dialog
+//	if ((moving_roi == true) && (counter>1) && ((counter/m_time_step)%1)==0) {//checks for an integer value ie divisible by 10
+	if (moving_roi == true){
 		run("Select None");
 		setTool("polyline");
-		waitForUser("Select a Region of Interest", "Please re-define the Cilia and press OK");
+		waitForUser("Select a Region of Interest", "Please define the Cilia and press OK");
+		measure_cilia();
 		get_skel_xy(Image);
-		status = "ROI Reset";
-	} else {
-		status = "";
-	}
-
-//get nearest distance to the skeleton
-	posx = x;
-	posy = y;
-	
-	if (moving_roi == true) {
+		//status = "ROI Reset";
+		//posx = x;
+		//posy = y;
 		get_s_dist(x, y, xpoints, ypoints);
 		dist = shortest;
 //measure the cilia
-		measure_cilia();
+		
+	
+	} else {
+		status = "";
 	}
-
+//return abck to measure/track tool
+	setTool("Interactive Measure Channel Tool");
+	
+	//makePoint(x, y);
+    makeOval(x-1,y-1,3,3);
+	run("Add Selection...");
+	makePoint(x, y);
+    wait(300);
+    
+    run("Enlarge...", "enlarge=5");
     counter++;
     //crop_new(Image, x, y, csize);
     Stack.setActiveChannels(view);
@@ -260,7 +259,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     Stack.setPosition(channel, slice, frame+1);
     Stack.setDisplayMode("composite");
     Stack.setActiveChannels(view);
-    run("Select None");
+    //run("Select None");
 
 //print results to the tracking table
 
