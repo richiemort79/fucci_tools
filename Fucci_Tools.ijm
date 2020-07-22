@@ -205,8 +205,8 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     crop_new(Image, x, y, csize);
 
 //get nearest distance to the skeleton
-//	posx = x;
-//	posy = y;
+	posx = x;
+	posy = y;
 	
 ///	if (moving_roi == true) {
 //		get_s_dist(x, y, xpoints, ypoints);
@@ -233,8 +233,8 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 		measure_cilia();
 		get_skel_xy(Image);
 		//status = "ROI Reset";
-		//posx = x;
-		//posy = y;
+		posx = x;
+		posy = y;
 		get_s_dist(x, y, xpoints, ypoints);
 		dist = shortest;
 //measure the cilia
@@ -253,7 +253,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     wait(300);
     
     run("Enlarge...", "enlarge=5");
-    run("Add Selection...");
+    //run("Add Selection...");
     counter++;
     //crop_new(Image, x, y, csize);
     Stack.setActiveChannels(view);
@@ -345,7 +345,7 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
 	makePoint(mitosis_x, mitosis_y);
     //run("Colors...", "foreground=white background=white selection=cyan");
     run("Enlarge...", "enlarge=25");
-    run("Add Selection...");
+    //run("Add Selection...");
 	
 	waitForUser("The track has switched to "+gtrack+daughter);
 	print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
@@ -836,7 +836,7 @@ function crop_new (image, x, y, size){
 	//print(type);
 
 	if (isOpen("Substack")) { } else {
-		newImage("Substack", "8-bit composite-mode", swidth, sheight, channels, 1, frames);
+		newImage("Substack", "8-bit composite-mode", swidth, sheight, pro_number_channels, 1, frames);
 		run(type+"-bit");
 
 //set luts dynamically from profile parameters
