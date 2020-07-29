@@ -658,7 +658,7 @@ function get_skel_xy(image) {
 	selectWindow(image);
 //check for a selection
 	sel = selectionType();
-	if (sel == -1) {exit("There is no line or area selection");}
+	if (sel == -1) {}//exit("There is no line or area selection");}
 	if ( sel == 10 || sel == 5 || sel == 6 || sel == 7){run("Line to Area");}
 
 			//run("Colors...", "foreground=white background=white selection=cyan");
