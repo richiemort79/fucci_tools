@@ -681,24 +681,32 @@ function get_skel_xy(image) {
 function measure_cilia() {
 
 	sel = selectionType();
-	if (sel == -1) {exit("There is no line or area selection");}
-	run("Set Measurements...", "display redirect=None decimal=4");
-	run("Measure");
-	c_length = getResult("Length",0);
-	selectWindow("Results");
-	run("Close");
-	run("Line to Area");
-	run("Set Measurements...", "shape feret's skewness kurtosis display redirect=None decimal=4");
-	run("Measure");
-	c_f_length = getResult("Feret", 0);
-	c_straightness = c_f_length/c_length;
-	c_kurtosis = getResult("Kurt", 0);
-	c_skewness = getResult("Skew", 0);
-	c_angle = getResult("FeretAngle", 0);
-	run("Restore Selection");
-	selectWindow("Results");
-	run("Close");
-	
+	if (sel == -1) {
+		//exit("There is no line or area selection");
+		c_length = 0;
+		c_f_length = 0;
+		c_straightness = 0;
+		c_kurtosis = 0;
+		c_skewness = 0;
+		c_angle = 0;
+		} else {
+		run("Set Measurements...", "display redirect=None decimal=4");
+		run("Measure");
+		c_length = getResult("Length",0);
+		selectWindow("Results");
+		run("Close");
+		run("Line to Area");
+		run("Set Measurements...", "shape feret's skewness kurtosis display redirect=None decimal=4");
+		run("Measure");
+		c_f_length = getResult("Feret", 0);
+		c_straightness = c_f_length/c_length;
+		c_kurtosis = getResult("Kurt", 0);
+		c_skewness = getResult("Skew", 0);
+		c_angle = getResult("FeretAngle", 0);
+		run("Restore Selection");
+		selectWindow("Results");
+		run("Close");
+	}
 }
 
 function convert_to_mdf2(){
