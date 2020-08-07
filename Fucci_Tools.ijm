@@ -46,6 +46,7 @@ var	ccyan = 5;
 var	cbright = 3;
 var	cfred = 1;
 var view = "01010";
+var view2 = "10000";
 
 //Global variables for the fucci_tools_profile.txt file
 var pro_time_step = 10;
@@ -54,6 +55,7 @@ var pro_number_channels = 5;
 var	pro_channels = newArray("Cyan","Green","Red","Magenta","Grays");
 var pro_channel_order = newArray(1,2,3,4,5);
 var pro_view = "01100";
+var pro_view2 = "10000";
 var pro_norm = "01100";
 var pro_crop = 50;
 var pro_track = false;
@@ -89,9 +91,13 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	count = 1;
 	getDimensions(width, height, channels, slices, frames);
 
+	print(pro_track+"!!");
+	
 //Get location of fucci_tools_profile and load the settings
 	profile_path = getDirectory("macros");
 	get_profile(profile_path);
+
+	//print(pro_track+"!!"pro_track);
 
 //prompt for calibration of image
 	Dialog.create("Please set calibration values");
@@ -105,6 +111,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	Dialog.addNumber("Far-Red =", pro_channel_order[3]);
 	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
 	Dialog.addString("View while tracking?", pro_view);
+	Dialog.addString("View while measuring?", pro_view2);
 	Dialog.addString("Normalise?", pro_norm);
 	Dialog.addMessage("Define the dimensions of the substack");	
 	Dialog.addNumber("Substack crop size", pro_crop);
@@ -120,6 +127,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	cfred = Dialog.getNumber();
 	cbright = Dialog.getNumber();
 	view = Dialog.getString();
+	view2 = Dialog.getString();
 	norm_c = Dialog.getString();
 	csize = Dialog.getNumber();
 	moving_roi = Dialog.getCheckbox();
@@ -185,8 +193,10 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 		run("Select None");
 		setTool("polyline");
 		Stack.setDisplayMode("composite");
-		Stack.setActiveChannels(view);
-		waitForUser("Select a Region of Interest", "Please define the Cilia and press OK");
+		Stack.setActiveChannels(view2);
+		run("Hide Overlay");
+		waitForUser("Select a Region of Interest", "Please define the Cilia and press OK, or press OK");
+		run("Show Overlay");
 		measure_cilia();
 		get_skel_xy(Image);
 		posx = x;
@@ -860,6 +870,7 @@ function get_profile(profile_path) {
 			pro_crop = substring(row[7],11,lengthOf(row[7]));
 			pro_track = substring(row[8],12,lengthOf(row[8]));
 			pro_track_step = substring(row[9],17,lengthOf(row[9]));
+			pro_view2 = substring(row[10],12,lengthOf(row[10]));
 	}
 }
 
