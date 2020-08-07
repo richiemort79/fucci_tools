@@ -797,7 +797,8 @@ function crop_new (image, x, y, size){
 	//print(type);
 
 	if (isOpen("Substack")) { } else {
-		newImage("Substack", "8-bit composite-mode", swidth, sheight, pro_number_channels, 1, frames);
+		//newImage("Substack", "8-bit composite-mode", swidth, sheight, pro_number_channels, 1, frames);
+		newImage("Substack", "8-bit composite-mode", swidth, sheight, channels, slices, frames);
 		run(type+"-bit");
 
 //set luts dynamically from profile parameters
