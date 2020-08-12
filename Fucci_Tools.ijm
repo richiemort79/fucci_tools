@@ -339,7 +339,8 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 
 //get the track numbers in an array to use as the index
 	track_number = list_no_repeats ("Results", "Track");
-
+	//Array.print(track_number);
+	
 //loop through each track and make the intensity plot
     for (q=0; q<track_number.length; q++) {
     
@@ -376,11 +377,11 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		if (pro_channel_order[4]>0) {smooth(bright_profile);}
 
 //normalise the data for plotting    
-        if (pro_channel_order[0]>0 && substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
-		if (pro_channel_order[1]>0 && substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
-		if (pro_channel_order[2]>0 && substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
-		if (pro_channel_order[3]>0 && substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
-		if (pro_channel_order[4]>0 && substring(norm_c, 4, 5) == 1) {normalise(bright_profile);}
+        if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
+		if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
+		if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
+		if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
+		if (pro_channel_order[4] == 0) {} else if (substring(norm_c, 4, 5) == 1) {normalise(bright_profile);}
 
 //start all the plots form t=0
         zero_time(plot_time);
@@ -394,35 +395,30 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 
 //Plot the data 
 		if (pro_channel_order[0]>0) {
-			print("!!!");
 			Plot.setColor("cyan");
        		Plot.add("circles", plot_time, cyan_profile);
         	Plot.add("lines", plot_time, cyan_profile);
         	//Plot.update()
 			}
 		if (pro_channel_order[1]>0) {
-			print("!!!");
 			Plot.setColor("green");
        		Plot.add("circles", plot_time, green_profile);
         	Plot.add("lines", plot_time, green_profile);
         	//Plot.update()
 			}
 		if (pro_channel_order[2]>0) {
-			print("!!!");
 			Plot.setColor("red");
        		Plot.add("circles", plot_time, red_profile);
         	Plot.add("lines", plot_time, red_profile);
         	//Plot.update()
 			}
 		if (pro_channel_order[3]>0) {
-			print("!!!");
 			Plot.setColor("magenta");
        		Plot.add("circles", plot_time, fred_profile);
         	Plot.add("lines", plot_time, fred_profile);
         	//Plot.update()
 			}
 		if (pro_channel_order[4]>0) {
-			print("!!!");
 			Plot.setColor("gray");
        		Plot.add("circles", plot_time, bright_profile);
         	Plot.add("lines", plot_time, bright_profile);
@@ -437,11 +433,10 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		if (pro_channel_order[2]>0) {Array.print(red_profile);}
 		if (pro_channel_order[3]>0) {Array.print(fred_profile);}
 		if (pro_channel_order[4]>0) {Array.print(bright_profile);}
-    }
 
 //make an image
 
-    	selectWindow("Track"+track_number[q]+" Normalised Intensity Plot");
+    	selectWindow("Track"+toString(track_number[q])+" Normalised Intensity Plot");
     	run("Select All");	
 		run("Copy");
 		run("Close");
