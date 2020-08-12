@@ -340,221 +340,104 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 //get the track numbers in an array to use as the index
 	track_number = list_no_repeats ("Results", "Track");
 
-//	t_num = 0;
-
-//	for (w=0; w<nResults; w++) {
-//		if ((getResult("Track", w) > t_num)||(getResult("Track", w) < t_num)) {
-//			t_num = getResult("Track", w);
-//			track_number = Array.concat(track_number, t_num);	
-//		}
-//	}
-
 //loop through each track and make the intensity plot
     for (q=0; q<track_number.length; q++) {
+    
     	print("Normalised, zeroed data for track #"+track_number[q]+"(Time,Cyan,Green,Red,F.Red,Bright)");
-    	setBatchMode(true);
-
-//Set time between frames here   
-
-//        channels = newArray();
- //       if (cred > 0) {channels =  Array.concat(channels,cred);}
-  //      if (cgreen > 0) {channels =  Array.concat(channels,cgreen);}
- ///       if (ccyan > 0) {channels =  Array.concat(channels,ccyan);}
- //       if (cbright > 0) {channels =  Array.concat(channels,cbright);}
- //       if (cfred > 0) {channels =  Array.concat(channels,cfred);}
- //       Array.getStatistics(channels, min, max, mean, stdDev);
 
 //Get number of channels
         max_ch = pro_number_channels;
 
-//Get min and max Frames
-		min_frame=0;
-		max_frame=0;
-		for (d=0; d<nResults(); d++) {
-    		if (getResult("Frame",d)>max_frame) {
-     			max_frame = getResult("Frame",d);
-    	}
-    	else {};
-			}
-
-		min_frame=max_frame;
-		for (e=0; e<nResults(); e++) {
-    		if (getResult("Frame",e)<min_frame) {
-     			min_frame = getResult("Frame",e);
-    			}
-    	else{};
-	}
-
 //Extract values and plot on graph
-
-	red_profile = newArray();
-	red_time = newArray();
-	green_profile = newArray();
-	green_time = newArray();
-	cyan_profile = newArray();
-	cyan_time = newArray();
-	bright_profile = newArray();
-	bright_time = newArray();
-	fred_profile = newArray();
-	fred_time = newArray();
-
+		plot_time = newArray;
+		red_profile = newArray();
+		green_profile = newArray();
+		cyan_profile = newArray();
+		bright_profile = newArray();
+		fred_profile = newArray();
 
 //Get red, the red channel number is stored in pro_channel_order[2]
-	if (cred>0){
-		time1=0;
-		profile1=0;
-		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q])){
-				time1 = (getResult("Frame",i))*time_step;
-				red_time = Array.concat(red_time,time1);
-				profile1 = getResult("Ch"+pro_channel_order[2]+"1_Mean",i);
-				red_profile = Array.concat(red_profile,profile1);
-				}
+	for (i=0; i<nResults(); i++){
+		if (getResultString("Track", i) == toString(track_number[q])){	
+			plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
+			if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
+			if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
+			if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
+			if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
+			if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
 			}
+	}
+	
+//smooth the data for plotting
+        if (pro_channel_order[0]>0) {smooth(cyan_profile);}
+		if (pro_channel_order[1]>0) {smooth(green_profile);}
+		if (pro_channel_order[2]>0) {smooth(red_profile);}
+		if (pro_channel_order[3]>0) {smooth(fred_profile);}
+		if (pro_channel_order[4]>0) {smooth(bright_profile);}
 
+//normalise the data for plotting    
+        if (pro_channel_order[0]>0 && substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
+		if (pro_channel_order[1]>0 && substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
+		if (pro_channel_order[2]>0 && substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
+		if (pro_channel_order[3]>0 && substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
+		if (pro_channel_order[4]>0 && substring(norm_c, 4, 5) == 1) {normalise(bright_profile);}
 
-//smooth and normalise red and zero time
-        smooth(red_profile);
-        if (substring(norm_c, cred-1, cred) == 1) {
-        	normalise(red_profile);
-        }
-        zero_time(red_time);
+//start all the plots form t=0
+        zero_time(plot_time);
 
 //Set up the graph
-	Plot.create("Track"+track_number[q]+" Normalised Intensity Plot", "Time (minutes)", "Normalised Integrated Density");
-	Plot.setFrameSize(800, 400);
-	Array.getStatistics(red_time, min, max, mean, stdDev);
-	Plot.setLimits(0, max, 0, 1);
-	Plot.setLineWidth(1);
+		Plot.create("Track"+track_number[q]+" Normalised Intensity Plot", "Time (minutes)", "Normalised Integrated Density");
+		Plot.setFrameSize(800, 400);
+		Array.getStatistics(plot_time, min, max, mean, stdDev);
+		Plot.setLimits(0, max, 0, 1);
+		Plot.setLineWidth(1);
 
-	//plot red        
-        Plot.setColor("red");
-        Plot.setLineWidth(1);
-        Plot.add("circles", red_time, red_profile);
-        Plot.add("lines", red_time, red_profile);
-       }
-
-//Get red, the green channel number is stored in pro_channel_order[1]
-	if (cgreen>0){
-		time1=0;
-		profile1=0;
-		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q])){
-				time1 = (getResult("Frame",i))*time_step;
-				green_time = Array.concat(green_time,time1);
-				profile1 = getResult("Ch"+pro_channel_order[1]+"1_Mean",i);
-				green_profile = Array.concat(green_profile,profile1);
-				}
+//Plot the data 
+		if (pro_channel_order[0]>0) {
+			print("!!!");
+			Plot.setColor("cyan");
+       		Plot.add("circles", plot_time, cyan_profile);
+        	Plot.add("lines", plot_time, cyan_profile);
+        	//Plot.update()
 			}
-
-
-//smooth and normalise green and zero time
-        smooth(green_profile);
-        if (substring(norm_c, cgreen-1, cgreen) == 1) {
-        	normalise(green_profile);
-        }
-        zero_time(green_time);
-
-//plot green        
-        Plot.setColor("green");
-        Plot.setLineWidth(1);
-        Plot.add("circles", green_time, green_profile);
-        Plot.add("lines", green_time, green_profile);
-        }
-
-//get bright, the bright channel number is stored in pro_channel_order[4]
-if (cbright > 0){
-
-	time1=0;
-	profile1=0;
-	for (i=0; i<nResults(); i++){
-		if (getResultString("Track", i) == toString(track_number[q])){
-			time1 = (getResult("Frame",i))*time_step;
-			bright_time = Array.concat(bright_time,time1);
-			profile1 = getResult("Ch"+pro_channel_order[4]+"1_Mean",i);
-			bright_profile = Array.concat(bright_profile,profile1);
+		if (pro_channel_order[1]>0) {
+			print("!!!");
+			Plot.setColor("green");
+       		Plot.add("circles", plot_time, green_profile);
+        	Plot.add("lines", plot_time, green_profile);
+        	//Plot.update()
 			}
-		}
-
-
-//smooth and normalise bright and zero time
-        smooth(bright_profile);
-        if (substring(norm_c, cbright-1, cbright) == 1) {
-        	normalise(bright_profile);
-        }
-        zero_time(bright_time);
-        
-//plot bright        
-        Plot.setColor("darkgray");
-        Plot.setLineWidth(1);
-        Plot.add("circles", bright_time, bright_profile);
-        Plot.add("lines", bright_time, bright_profile);
-        }
-
-
-//Get cyan, the cyan channel number is stored in pro_channel_order[0]
-	if (ccyan > 0){
-		time1=0;
-		profile1=0;
-		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q])){
-				time1 = (getResult("Frame",i))*time_step;
-				cyan_time = Array.concat(cyan_time,time1);
-				profile1 = getResult("Ch"+pro_channel_order[0]+"1_Mean",i);
-				cyan_profile = Array.concat(cyan_profile,profile1);
-				}
+		if (pro_channel_order[2]>0) {
+			print("!!!");
+			Plot.setColor("red");
+       		Plot.add("circles", plot_time, red_profile);
+        	Plot.add("lines", plot_time, red_profile);
+        	//Plot.update()
 			}
-
-//smooth and normalise fred and zero time
-        smooth(cyan_profile);
-        if (substring(norm_c, ccyan-1, ccyan) == 1) {
-        	normalise(cyan_profile);
-        }
-        zero_time(cyan_time);
-
-//plot cyan        
-        Plot.setColor("cyan");
-        Plot.setLineWidth(1);
-        Plot.add("circles", cyan_time, cyan_profile);
-        Plot.add("lines", cyan_time, cyan_profile);  
-        }
-
-//Get fred, the fred channel number is stored in pro_channel_order[3] 
-	if (cfred>0){
-		time1=0;
-		profile1=0;
-		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q])){
-				time1 = (getResult("Frame",i))*time_step;
-				fred_time = Array.concat(fred_time,time1);
-				profile1 = getResult("Ch"+pro_channel_order[3]+"1_Mean",i);
-				fred_profile = Array.concat(fred_profile,profile1);
-				}
+		if (pro_channel_order[3]>0) {
+			print("!!!");
+			Plot.setColor("magenta");
+       		Plot.add("circles", plot_time, fred_profile);
+        	Plot.add("lines", plot_time, fred_profile);
+        	//Plot.update()
 			}
-
-//smooth and normalise fred and zero time
-        smooth(fred_profile);
-        if (substring(norm_c, cfred-1, cfred) == 1) {
-        	normalise(fred_profile);
-        }
-        zero_time(fred_time);
-
-//plot fred        
-        Plot.setColor("magenta");
-        Plot.setLineWidth(1);
-        Plot.add("circles", fred_time, fred_profile);
-        
-        Plot.add("lines", fred_time, fred_profile);
-        }
-		
-		setBatchMode(false);
+		if (pro_channel_order[4]>0) {
+			print("!!!");
+			Plot.setColor("gray");
+       		Plot.add("circles", plot_time, bright_profile);
+        	Plot.add("lines", plot_time, bright_profile);
+        	//Plot.update()
+			}
 		Plot.show;
-		Array.print(fred_time);
-		Array.print(cyan_profile);
-		Array.print(green_profile);
-		Array.print(red_profile);
-		Array.print(fred_profile);
-		Array.print(bright_profile);
+				
+//Print the smoothed normalised data to the log		
+		Array.print(plot_time);
+		if (pro_channel_order[0]>0) {Array.print(cyan_profile);}
+		if (pro_channel_order[1]>0) {Array.print(green_profile);}
+		if (pro_channel_order[2]>0) {Array.print(red_profile);}
+		if (pro_channel_order[3]>0) {Array.print(fred_profile);}
+		if (pro_channel_order[4]>0) {Array.print(bright_profile);}
+    }
 
 //make an image
 
