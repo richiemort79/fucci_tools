@@ -222,8 +222,8 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     Stack.setActiveChannels(view);
 
 //print results to the tracking table
-	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(slice)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
-	last_line = ""+(slice)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
+	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
+	last_line = ""+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
 	  
 }
 
@@ -404,7 +404,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q]){
+			if (getResultString("Track", i) == toString(track_number[q])){
 				time1 = (getResult("Frame",i))*time_step;
 				red_time = Array.concat(red_time,time1);
 				profile1 = getResult("Ch"+pro_channel_order[2]+"1_Mean",i);
@@ -439,7 +439,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q]){
+			if (getResultString("Track", i) == toString(track_number[q])){
 				time1 = (getResult("Frame",i))*time_step;
 				green_time = Array.concat(green_time,time1);
 				profile1 = getResult("Ch"+pro_channel_order[1]+"1_Mean",i);
@@ -468,7 +468,7 @@ if (cbright > 0){
 	time1=0;
 	profile1=0;
 	for (i=0; i<nResults(); i++){
-		if (getResultString("Track", i) == toString(track_number[q]){
+		if (getResultString("Track", i) == toString(track_number[q])){
 			time1 = (getResult("Frame",i))*time_step;
 			bright_time = Array.concat(bright_time,time1);
 			profile1 = getResult("Ch"+pro_channel_order[4]+"1_Mean",i);
@@ -497,7 +497,7 @@ if (cbright > 0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q]){
+			if (getResultString("Track", i) == toString(track_number[q])){
 				time1 = (getResult("Frame",i))*time_step;
 				cyan_time = Array.concat(cyan_time,time1);
 				profile1 = getResult("Ch"+pro_channel_order[0]+"1_Mean",i);
@@ -524,7 +524,7 @@ if (cbright > 0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if (getResultString("Track", i) == toString(track_number[q]){
+			if (getResultString("Track", i) == toString(track_number[q])){
 				time1 = (getResult("Frame",i))*time_step;
 				fred_time = Array.concat(fred_time,time1);
 				profile1 = getResult("Ch"+pro_channel_order[3]+"1_Mean",i);
