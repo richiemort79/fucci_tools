@@ -338,15 +338,16 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	}
 
 //get the track numbers in an array to use as the index
-	track_number = newArray();
-	t_num = 0;
+	track_number = list_no_repeats ("Results", "Track");
 
-	for (w=0; w<nResults; w++) {
-		if ((getResult("Track", w) > t_num)||(getResult("Track", w) < t_num)) {
-			t_num = getResult("Track", w);
-			track_number = Array.concat(track_number, t_num);	
-		}
-	}
+//	t_num = 0;
+
+//	for (w=0; w<nResults; w++) {
+//		if ((getResult("Track", w) > t_num)||(getResult("Track", w) < t_num)) {
+//			t_num = getResult("Track", w);
+//			track_number = Array.concat(track_number, t_num);	
+//		}
+//	}
 
 //loop through each track and make the intensity plot
     for (q=0; q<track_number.length; q++) {
@@ -355,16 +356,16 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 
 //Set time between frames here   
 
-        channels = newArray();
-        if (cred > 0) {channels =  Array.concat(channels,cred);}
-        if (cgreen > 0) {channels =  Array.concat(channels,cgreen);}
-        if (ccyan > 0) {channels =  Array.concat(channels,ccyan);}
-        if (cbright > 0) {channels =  Array.concat(channels,cbright);}
-        if (cfred > 0) {channels =  Array.concat(channels,cfred);}
-        Array.getStatistics(channels, min, max, mean, stdDev);
+//        channels = newArray();
+ //       if (cred > 0) {channels =  Array.concat(channels,cred);}
+  //      if (cgreen > 0) {channels =  Array.concat(channels,cgreen);}
+ ///       if (ccyan > 0) {channels =  Array.concat(channels,ccyan);}
+ //       if (cbright > 0) {channels =  Array.concat(channels,cbright);}
+ //       if (cfred > 0) {channels =  Array.concat(channels,cfred);}
+ //       Array.getStatistics(channels, min, max, mean, stdDev);
 
 //Get number of channels
-        max_ch = max;
+        max_ch = pro_number_channels;
 
 //Get min and max Frames
 		min_frame=0;
@@ -398,15 +399,15 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	fred_time = newArray();
 
 
-//Get red
+//Get red, the red channel number is stored in pro_channel_order[2]
 	if (cred>0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if ((getResult("Ch",i)==cred)&&(getResult("Track", i) == track_number[q])){
+			if (getResultString("Track", i) == toString(track_number[q]){
 				time1 = (getResult("Frame",i))*time_step;
 				red_time = Array.concat(red_time,time1);
-				profile1 = getResult("RawIntDen",i);
+				profile1 = getResult("Ch"+pro_channel_order[2]+"1_Mean",i);
 				red_profile = Array.concat(red_profile,profile1);
 				}
 			}
@@ -433,18 +434,19 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         Plot.add("lines", red_time, red_profile);
        }
 
-//get green
+//Get red, the green channel number is stored in pro_channel_order[1]
 	if (cgreen>0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if ((getResult("Ch",i)==cgreen)&&(getResult("Track", i) == track_number[q])){
+			if (getResultString("Track", i) == toString(track_number[q]){
 				time1 = (getResult("Frame",i))*time_step;
 				green_time = Array.concat(green_time,time1);
-				profile1 = getResult("RawIntDen",i);
+				profile1 = getResult("Ch"+pro_channel_order[1]+"1_Mean",i);
 				green_profile = Array.concat(green_profile,profile1);
 				}
 			}
+
 
 //smooth and normalise green and zero time
         smooth(green_profile);
@@ -460,16 +462,16 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         Plot.add("lines", green_time, green_profile);
         }
 
-//get bright
+//get bright, the bright channel number is stored in pro_channel_order[4]
 if (cbright > 0){
 
 	time1=0;
 	profile1=0;
 	for (i=0; i<nResults(); i++){
-		if ((getResult("Ch",i)==cbright)&&(getResult("Track", i) == track_number[q])){
+		if (getResultString("Track", i) == toString(track_number[q]){
 			time1 = (getResult("Frame",i))*time_step;
 			bright_time = Array.concat(bright_time,time1);
-			profile1 = getResult("RawIntDen",i);
+			profile1 = getResult("Ch"+pro_channel_order[4]+"1_Mean",i);
 			bright_profile = Array.concat(bright_profile,profile1);
 			}
 		}
@@ -489,15 +491,16 @@ if (cbright > 0){
         Plot.add("lines", bright_time, bright_profile);
         }
 
-//get cyan
+
+//Get cyan, the cyan channel number is stored in pro_channel_order[0]
 	if (ccyan > 0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if ((getResult("Ch",i)==ccyan)&&(getResult("Track", i) == track_number[q])){
+			if (getResultString("Track", i) == toString(track_number[q]){
 				time1 = (getResult("Frame",i))*time_step;
 				cyan_time = Array.concat(cyan_time,time1);
-				profile1 = getResult("RawIntDen",i);
+				profile1 = getResult("Ch"+pro_channel_order[0]+"1_Mean",i);
 				cyan_profile = Array.concat(cyan_profile,profile1);
 				}
 			}
@@ -516,15 +519,15 @@ if (cbright > 0){
         Plot.add("lines", cyan_time, cyan_profile);  
         }
 
-//Get fred
+//Get fred, the fred channel number is stored in pro_channel_order[3] 
 	if (cfred>0){
 		time1=0;
 		profile1=0;
 		for (i=0; i<nResults(); i++){
-			if ((getResult("Ch",i)==cfred)&&(getResult("Track", i) == track_number[q])){
+			if (getResultString("Track", i) == toString(track_number[q]){
 				time1 = (getResult("Frame",i))*time_step;
 				fred_time = Array.concat(fred_time,time1);
-				profile1 = getResult("RawIntDen",i);
+				profile1 = getResult("Ch"+pro_channel_order[3]+"1_Mean",i);
 				fred_profile = Array.concat(fred_profile,profile1);
 				}
 			}
@@ -891,6 +894,38 @@ function addToArray(value, array, position) {
         array=temparray;
     }
     return array;
+}
+
+function list_no_repeats (table, heading) {
+//Returns an array of the entries in a column without repeats to use as an index
+
+//Check whether the table exists
+	if (isOpen(table)) {
+
+//get the entries in the column without repeats
+		no_repeats = newArray(getResultString(heading, 0));
+
+		for (i=0; i<nResults; i++) {
+			occurence = getResultString(heading, i);
+			for (j=0; j<no_repeats.length; j++) {
+				if (occurence != no_repeats[j]) {
+					flag = 0;
+				} else {
+						flag = 1;
+					}
+				}
+			
+			if (flag == 0) {
+				occurence = getResultString(heading, i);
+				no_repeats = Array.concat(no_repeats, occurence);	
+			}
+		}
+	} else {
+		Dialog.createNonBlocking("Error");
+		Dialog.addMessage("No table with the title "+table+" found.");
+		Dialog.show();
+	}
+	return no_repeats;
 }
 
 //Icons used courtesy of: http://www.famfamfam.com/lab/icons/silk/
