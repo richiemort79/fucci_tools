@@ -56,7 +56,7 @@ var	pro_channels = newArray("Cyan","Green","Red","Magenta","Grays");
 var pro_channel_order = newArray(1,2,3,4,5);
 var pro_view = "01100";
 var pro_view2 = "10000";
-var pro_norm = "01100";
+var pro_norm = "11111";
 var pro_crop = 50;
 var pro_track = false;
 var pro_track_step = 10;
@@ -72,6 +72,12 @@ var	c_angle = 0;
 //Gloabal variables for intensities
 var mean_intensities = newArray(0,0,0,0,0);
 var int_densities = newArray(0,0,0,0,0);
+
+
+//Variables for plot dialog
+var check_labels = newArray("Cyan","Green","Red","Magenta","Grays", "Cilia Lenggth");
+var check_defaults = newArray(false,true,true,false,false, true);
+var check_plot = newArray(0,0,0,0,0,0);
 
 macro "Initialize Action Tool - CeefD25D4cD52Dd6CdddD18CfffD00D01D02D03D0cD0dD0eD0fD10D11D1eD1fD20D27D28D2fD30D35D3aD3fD44D4bD53D5cD72D82Da3DacDb4DbbDc0Dc5DcaDcfDd0Dd7DdfDe0De1DeeDefDf0Df1Df2Df3DfcDfdDfeDffCcccDd4CfffD26D39D62D7dD92Db3Dc4Dc6Dd8CdefD22D2dDd2DddCaaaDe7CeffD04D0bD29D37D38D40D45D4fD54D55D64D6cD73D7bD83D8aD8dD99D9cDa8Db0DbfDc9Df4DfbCdefD5bD6aD6bDa9Db7Db8CcdfD14D41Db1CfffD12D1dD21D2eD34D36D43D63D93Dd1DdeDe2DedCdefD05D0aD13D1cD31D3eD50D5fDa0DafDc1DceDe3DecDf5DfaC58cD97CeefD46D47D56D65D84CdeeD9dCbdfDebCbcdDadCeefD49D4aD58D59D5aD67D68D69D6dD7cD8cDa5Da6Db5Db6Dc7Dc8CcefD06D09D60D6fD90D9fDf6Df9C58cD75D76D77D78D79D86D87D88CeefD48D57D66D94D95Da4CddeD24D42Dd5CcdeD3dCbbcD3cDe6C9aaDbdCeeeD2aCbdfD07D08D70D7fD80D8fDf7Df8CaceD96CeffD3bCdddD71CccdDe5CabbDe9C999D7eD8eCdefD8bD9aD9bDaaDabDb9DbaCcdfD1bDe4CbcdDcdDdcCddeD15D51CcdeD1aDa1Dc2Dd3CbbdDaeCaabD9eDdbCeeeDa2CbdeDa7DbeCdddD17D19D81CccdDc3CaabD6eC9aaDccCdefD23D32CcdfD4eCbcdDdaCcdeD2cCaaaDe8CbceD74D85CddeD16D33D61D91CcddD5dDb2CbbbD4dCbcdD5eDeaCdeeDbcDcbDd9CccdD2b"
 {
@@ -306,7 +312,7 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
 }
 
 macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04D05D06D07D08D09D0aD0bD0cD0dD0eD0fD10D1fD20D24D26D27D2fD30D31D36D3bD3fD40D41D42D43D49D4aD4bD4fD50D51D52D53D59D5aD5fD60D61D62D66D69D6dD6fD70D71D75D76D77D7cD7fD80D81D84D85D86D8cD8dD8fD90D91D94D95D9bD9cD9dD9fDa0Da1Da8DabDacDafDb0Db1Db2Db7Db8DbcDbdDbfDc0Dc1Dc2Dc7Dc8Dc9DcfDd0Dd1Dd2Dd3Dd8Dd9DdaDdbDdfDe0De1De2De3De4DebDecDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC05eD68C9c8D89C26aD6eD7eD8eD9eDaeDbeDceDdeDeeCf66Db3C45bD57C8beD32Da5C6b6D99Da9Ce34D56C37bD18CeccD2bC26bD5eCabaDddC58eD87CefeD2cDcdC493DcbCf33Dd6C26bD1aD1bCbdbD2dCf77D83D92C38dDe5CbceD22C8a8D3cCf56Dd7De9C37cD11D12D13D14D15D16D17CfddD74C66bD45Cf88D65C7aeD58Db6CfeeD3aDc3C483D6bCf22D39De8C16dD97CacaD6cCf66D37C38dDb5CaceDd4C7b6DaaCf55D73Da3Db4CfccDa2C26bD1cD1dD1eD2eD3eD4eCc9bDe6C7aeD67CeefD25C5a4D7aD8aCf33De7C36bD19CcdcD3dCf77D63C38eDc5CeeeD7dDadC8b8D5bDdcCfeeDa4Dc6DeaCfaaD2aC8aeD79CfffD8bDedC484D4cCf12D47C05eD78D88C9c9DbbCf66D82D93Cf44D64CcecD6aC8beDa7C6aeD44D96C4a3DbaCe23D46CcebDb9C48dD33CcdfD21C8b7D9aCf99D54C594DccCbdbDcaC38eD34CacfD98C8b7D7bCeddD28CfaaD72Cf33D55C27dDa6CcdcD4dCf88D48C48eDd5CdefD23CfbbD29C8beD35Ce55Dc4"{
-
+	
 	Dialog.create("Set parameters");
 	Dialog.addNumber("Time Step (min):", pro_time_step);
 	Dialog.addNumber("Cyan Channel =", pro_channel_order[0]);
@@ -315,6 +321,8 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	Dialog.addNumber("Far-Red =", pro_channel_order[3]);
 	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
 	Dialog.addString("Normalise?", pro_norm);
+	Dialog.addMessage("Choose the features you wish to plot:");
+  	Dialog.addCheckboxGroup(3,2,check_labels,check_defaults);
 	Dialog.show();
 	time_step = Dialog.getNumber();
 	ccyan = Dialog.getNumber();
@@ -323,6 +331,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	cfred = Dialog.getNumber();
 	cbright = Dialog.getNumber();
 	norm_c = Dialog.getString();
+
+	for (i=0; i<check_defaults.length; i++) {
+		 doplot = Dialog.getCheckbox();
+		 addToArray(doplot, check_plot, i); 
+	}
+
+	Array.print(check_plot);
     
 //if the results table is empty prompt for a results table
 	if (isOpen("Results")) {
@@ -357,7 +372,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		bright_profile = newArray();
 		fred_profile = newArray();
 
-//Get red, the red channel number is stored in pro_channel_order[2]
+//Get the data into arrays a track at a time to work on - channel number is stored in pro_channel_order[2]
 	for (i=0; i<nResults(); i++){
 		if (getResultString("Track", i) == toString(track_number[q])){	
 			plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
@@ -383,7 +398,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
 		if (pro_channel_order[4] == 0) {} else if (substring(norm_c, 4, 5) == 1) {normalise(bright_profile);}
 
-//start all the plots form t=0
+//start all the plots from t=0
         zero_time(plot_time);
 
 //Set up the graph
@@ -394,31 +409,31 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		Plot.setLineWidth(1);
 
 //Plot the data 
-		if (pro_channel_order[0]>0) {
+		if (pro_channel_order[0]>0 && check_plot[0]==1) {
 			Plot.setColor("cyan");
        		Plot.add("circles", plot_time, cyan_profile);
         	Plot.add("lines", plot_time, cyan_profile);
         	//Plot.update()
 			}
-		if (pro_channel_order[1]>0) {
+		if (pro_channel_order[1]>0 && check_plot[1]==1) {
 			Plot.setColor("green");
        		Plot.add("circles", plot_time, green_profile);
         	Plot.add("lines", plot_time, green_profile);
         	//Plot.update()
 			}
-		if (pro_channel_order[2]>0) {
+		if (pro_channel_order[2]>0 && check_plot[2]==1) {
 			Plot.setColor("red");
        		Plot.add("circles", plot_time, red_profile);
         	Plot.add("lines", plot_time, red_profile);
         	//Plot.update()
 			}
-		if (pro_channel_order[3]>0) {
+		if (pro_channel_order[3]>0 && check_plot[3]==1) {
 			Plot.setColor("magenta");
        		Plot.add("circles", plot_time, fred_profile);
         	Plot.add("lines", plot_time, fred_profile);
         	//Plot.update()
 			}
-		if (pro_channel_order[4]>0) {
+		if (pro_channel_order[4]>0 && check_plot[4]==1) {
 			Plot.setColor("gray");
        		Plot.add("circles", plot_time, bright_profile);
         	Plot.add("lines", plot_time, bright_profile);
