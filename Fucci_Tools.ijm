@@ -33,7 +33,6 @@ var com_roi_y = 0;
 
 //Global variable for results table
 var f = "";
-
 var Image = "";
 var moving_roi = true;
 var m_time_step = 10;
@@ -359,7 +358,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 //loop through each track and make the intensity plot
     for (q=0; q<track_number.length; q++) {
     
-    	print("Normalised, zeroed data for track #"+track_number[q]+"(Time,Cyan,Green,Red,F.Red,Bright)");
+    	print("Normalised, zeroed data for track #"+track_number[q]+"(Time,Cyan,Green,Red,F.Red,Bright, C. Length)");
 
 //Get number of channels
         max_ch = pro_number_channels;
@@ -371,6 +370,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		cyan_profile = newArray();
 		bright_profile = newArray();
 		fred_profile = newArray();
+		cilia_length = newArray();
 
 //Get the data into arrays a track at a time to work on - channel number is stored in pro_channel_order[2]
 	for (i=0; i<nResults(); i++){
@@ -381,6 +381,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
 			if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
 			if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+			if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
 			}
 	}
 	
@@ -390,13 +391,14 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		if (pro_channel_order[2]>0) {smooth(red_profile);}
 		if (pro_channel_order[3]>0) {smooth(fred_profile);}
 		if (pro_channel_order[4]>0) {smooth(bright_profile);}
+		if (check_plot[5]==1) {smooth(cilia_length);}
 
 //normalise the data for plotting    
         if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
 		if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
 		if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
 		if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
-		if (pro_channel_order[4] == 0) {} else if (substring(norm_c, 4, 5) == 1) {normalise(bright_profile);}
+		if (check_plot[5]==1) {normalise(cilia_length);}
 
 //start all the plots from t=0
         zero_time(plot_time);
@@ -406,7 +408,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		Plot.setFrameSize(800, 400);
 		Array.getStatistics(plot_time, min, max, mean, stdDev);
 		Plot.setLimits(0, max, 0, 1);
-		Plot.setLineWidth(1);
+		Plot.setLineWidth(2);
 
 //Plot the data 
 		if (pro_channel_order[0]>0 && check_plot[0]==1) {
@@ -439,6 +441,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         	Plot.add("lines", plot_time, bright_profile);
         	//Plot.update()
 			}
+		if (check_plot[5]==1) {
+			Plot.setColor("cyan");
+			Plot.setLineWidth(2);
+       		Plot.add("circles", plot_time, cilia_length);
+        	Plot.add("lines", plot_time, cilia_length);
+        	//Plot.update()
+			}
 		Plot.show;
 				
 //Print the smoothed normalised data to the log		
@@ -448,6 +457,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		if (pro_channel_order[2]>0) {Array.print(red_profile);}
 		if (pro_channel_order[3]>0) {Array.print(fred_profile);}
 		if (pro_channel_order[4]>0) {Array.print(bright_profile);}
+		if (check_plot[5]==1) {Array.print(cilia_length);}
 
 //make an image
 
