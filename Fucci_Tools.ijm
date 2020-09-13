@@ -369,15 +369,37 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	track_number = list_no_repeats ("Results", "Track");
 	//Array.print(track_number);
 
-//make the arrays for the interpolated plots
-		int_plot_time = newArray;
+//make the arrays and results table for the interpolated plots
+	if (type_plot[1]==true) {
+		data_count = 0;
+		
+		//interpolated data will ahve 100 interpolated time points
+		int_plot_time = newArray("0");
+		
+		for (i=1; i<100; i++) {
+			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
+		}
+		
 		int_red_profile = newArray();
-		iny_green_profile = newArray();
+		int_green_profile = newArray();
 		int_cyan_profile = newArray();
 		int_bright_profile = newArray();
 		int_fred_profile = newArray();
 		int_cilia_length = newArray();
 
+	//draws the tracking table
+    	requires("1.41g");
+		title1 = "Interpolated Data";
+		title2 = "["+title1+"]";
+		g = title2;
+
+		if (isOpen(title1)) {
+		}
+			else {
+				run("Table...", "name="+title2+" width=1000 height=300");
+				print(g, "\\Headings: \tTrack\tInt_Time\tCyan\tGreen\tRed\tFar_Red\tBright\tCilia_Length");
+			}   
+	}
 	
 //loop through each track and make the intensity plot
     for (q=0; q<track_number.length; q++) {
@@ -492,6 +514,29 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		run("Internal Clipboard");
 		selectWindow("Clipboard");
 		rename("Normalised Intensity Plot Track "+track_number[q]);
+
+//resample the data and write to new table if plot_type[1] = true
+		if (type_plot[1] == true){
+			if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
+			if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
+			if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
+			if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
+			if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
+			if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
+
+//write the data to the new table
+			for (i=0; i<int_plot_time.length; i++) {
+				print(g,(number++)+"\t"+track_number[q]+"\t"+int_plot_time[i]+"\t"+cyan_profile[i]+"\t"+green_profile[i]+"\t"+red_profile[i]+"\t"+fred_profile[i]+"\t"+bright_profile[i]+"\t"+cilia_length[i]);
+			}
+			//rename the tables
+			selectWindow("Results");
+			IJ.renameResults("Results2");
+			selectWindow("Interpolated Data");
+   			tdir = getDirectory("temp");
+			saveAs("Text", tdir+"Results.xls");
+			open(tdir+"Results.xls");
+
+		}
         
   }
 }
