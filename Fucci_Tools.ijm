@@ -389,7 +389,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 
 	//draws the interpolated tracking table
     	requires("1.41g");
-		title1 = "Interpolated Data";
+		title1 = "Normalised Interpolated Data";
 		title2 = "["+title1+"]";
 		g = title2;
 
@@ -406,10 +406,10 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		data_count = 0;
 		
 		//interpolated data will ahve 100 interpolated time points
-		int_plot_time = newArray("0");
+		cilia_plot_time = newArray("0");
 		
 		for (i=1; i<100; i++) {
-			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
+			cilia_plot_time = Array.concat(cilia_plot_time, 1+int_plot_time[i-1]);
 		}
 		
 		int_red_profile = newArray();
@@ -567,12 +567,12 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		}
 
 //trim and resample the cilia length data and write to new table if plot_type[2] = true
-		if (type_plot[3] == true){
+		if (type_plot[2] == true){
 			if (check_plot[5]==1) {cilia_length = trim_resample_array(cilia_length,100);}
 
 //write the data to the new table
-			for (i=0; i<cilia_plot_time; i++) {
-				print(h,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+cilia_length[i]);
+			for (i=0; i<cilia_plot_time.length; i++) {
+				print(h,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+cilia_plot_time[i]+"\t"+cilia_length[i]);
 				
 			}
 
@@ -949,13 +949,157 @@ function trim_resample_array (array, length) {
 		if (array[i] > 0){
 				start = i;
 				done = true;
+				} else {
+					start = 0;
 				}
 	}
 
-	array = Array.slice(array,start,array.length)
+	array = Array.slice(array,start,array.length);
 	array = Array.resample(array, 100); 
 	
 	return array;
+}
+
+function mean_index (column1, column2, length) {
+//returns the means for a results table column split by a second column - assumes all datasets are the same length (length)
+
+    mean_values = newArray();
+	
+	for (i=0; i<length; i++) {
+		mean_values = Array.concat(mean_values, 0);
+		variance = Array.concat(variance, 0);
+	}
+
+//get the identifiers from column2 to usee as the index
+	index = list_no_repeats ("Results", column1);
+	count = index.length;
+
+//get the mean values into an array
+	for (i=0; i<index.length; i++) {
+		var done = false;
+		for (j=0; j<nResults() && !done; j++){
+		if (getResultString(column1, j) == toString(index[i])){
+			start = j;
+			done = true;
+			}
+		}	
+		values = newArray();
+		
+		for (k=start; k<start+mean_values.length; k++) {
+			values = Array.concat(values,getResult(column2,k));
+		}
+		
+//is the array valid or is it full of NaN in which case discard and subtract 1 from count
+
+		if (toString(values[0]) == "NaN") {count = count -1;} else {
+		
+			for (l=0; l<mean_values.length; l++) {
+				mean = mean_values[l] + values[l];
+				addToArray(mean, mean_values, l);
+			}
+		}
+	}
+
+	if (toString(values[0]) == "NaN") {} else {
+
+		for (i=0; i<mean_values.length; i++) {
+			mean = mean_values[i] / count;
+			addToArray(mean, mean_values, i);
+		}
+	}
+	return mean_values;
+}
+
+function conf_index (column1, column2, length) {
+//returns the 95%CI for a results table column split by a second column - assumes all datasets are the same length (length)
+
+    mean_values = newArray();
+	confidence = newArray();
+	variance = newArray();
+	standard_deviation =newArray();
+	standard_error = newArray();
+	
+	for (i=0; i<length; i++) {
+		mean_values = Array.concat(mean_values, 0);
+		variance = Array.concat(variance, 0);
+	}
+
+//get the identifiers from column2 to use as the index
+	index = list_no_repeats ("Results", column1);
+	count = index.length;
+
+//get the mean values into an array
+	for (i=0; i<index.length; i++) {
+		var done = false;
+		for (j=0; j<nResults() && !done; j++){
+		if (getResultString(column1, j) == toString(index[i])){
+			start = j;
+			done = true;
+			}
+		}
+
+		values = newArray();
+		
+		for (k=start; k<start+mean_values.length; k++) {
+			values = Array.concat(values,getResult(column2,k));
+		}
+
+//is the array valid or is it full of NaN in which case discard and subtract 1 from count
+		if (toString(values[0]) == "NaN") {count = count -1;} else {
+		
+			for (l=0; l<mean_values.length; l++) {
+				mean = mean_values[l] + values[l];
+				addToArray(mean, mean_values, l);
+			}
+		}
+	}
+	if (toString(values[0]) == "NaN") {} else {
+		
+		for (i=0; i<mean_values.length; i++) {
+			mean = mean_values[i] / count;
+			addToArray(mean, mean_values, i);
+		}
+	}
+	
+//get the variance into an array
+		for (i=0; i<index.length; i++) {
+		var done = false;
+		for (j=0; j<nResults() && !done; j++){
+		if (getResultString(column1, j) == toString(index[i])){
+			start = j;
+			done = true;
+			}
+		}
+		values = newArray();
+		
+		for (k=start; k<start+variance.length; k++) {
+			values = Array.concat(values,getResult(column2,k));
+		}
+
+//is the array valid or is it full of NaN in which case discard
+		if (toString(values[0]) == "NaN") {} else {
+		
+			for (l=0; l<variance.length; l++) {
+				value = (values[l] - mean_values[l]) * (values[l] - mean_values[l]);
+				value2 = variance[l] + value;
+				addToArray(value2, variance, l);
+			}
+		}
+	}
+	if (toString(values[0]) == "NaN") {} else { 	
+		for (i=0; i<variance.length; i++) {
+			standard_deviation = Array.concat(standard_deviation, sqrt(variance[i]));
+		}
+
+		for (i=0; i<standard_deviation.length; i++) {
+			standard_error = Array.concat(standard_error, standard_deviation[i]/sqrt(count));
+		}
+
+		for (i=0; i<standard_error.length; i++) {
+			confidence = Array.concat(confidence, standard_error[i]*1.96);
+		}
+	}
+	return confidence;
 }
 
 //Icons used courtesy of: http://www.famfamfam.com/lab/icons/silk/
