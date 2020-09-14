@@ -367,7 +367,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	}
 
 //get the track numbers in an array to use as the index
-	track_number = list_no_repeats ("Results", "Track");
+	track_number = list_no_repeats_skip ("Results", "Track", "Seed");
 	//Array.print(track_number);
 
 //make the arrays and results table for the interpolated plots
@@ -589,19 +589,19 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			open(tdir+"Results.xls");
 
 //get the data
-			if (pro_channel_order[0]>0) {cyan_profile = mean_index("Track","Cyan", 100);}
-			if (pro_channel_order[1]>0) {green_profile = mean_index("Track","Green", 100);}
-			if (pro_channel_order[2]>0) {red_profile = mean_index("Track","Red", 100);}
-			if (pro_channel_order[3]>0) {fred_profile = mean_index("Track","Far_Red", 100);}
-			if (pro_channel_order[4]>0) {bright_profile = mean_index("Track","Bright", 100);}
-			if (check_plot[5]==1) {cilia_length = mean_index("Track","Cilia Length", 100);}
+			if (pro_channel_order[0]>0) {cyan_profile = mean_index(track_number,"Track", "Cyan", 100);}
+			if (pro_channel_order[1]>0) {green_profile = mean_index(track_number,"Track","Green", 100);}
+			if (pro_channel_order[2]>0) {red_profile = mean_index(track_number,"Track", "Red", 100);}
+			if (pro_channel_order[3]>0) {fred_profile = mean_index(track_number,"Track","Far_Red", 100);}
+			if (pro_channel_order[4]>0) {bright_profile = mean_index(track_number,"Track","Bright", 100);}
+			if (check_plot[5]==1) {cilia_length = mean_index(track_number,"Track","Cilia_Length", 100);}
 
-			if (pro_channel_order[0]>0) {cyan_profile_ci = conf_index("Track","Cyan", 100);}
-			if (pro_channel_order[1]>0) {green_profile_ci = conf_index("Track","Green", 100);}
-			if (pro_channel_order[2]>0) {red_profile_ci = conf_index("Track","Red", 100);}
-			if (pro_channel_order[3]>0) {fred_profile_ci = conf_index("Track","Far_Red", 100);}
-			if (pro_channel_order[4]>0) {bright_profile_ci = conf_index("Track","Bright", 100);}
-			if (check_plot[5]==1) {cilia_length_ci = conf_index("Track","Cilia Length", 100);}
+			if (pro_channel_order[0]>0) {cyan_profile_ci = conf_index(track_number,"Track","Cyan", 100);}
+			if (pro_channel_order[1]>0) {green_profile_ci = conf_index(track_number,"Track","Green", 100);}
+			if (pro_channel_order[2]>0) {red_profile_ci = conf_index(track_number,"Track","Red", 100);}
+			if (pro_channel_order[3]>0) {fred_profile_ci = conf_index(track_number,"Track","Far_Red", 100);}
+			if (pro_channel_order[4]>0) {bright_profile_ci = conf_index(track_number,"Track","Bright", 100);}
+			if (check_plot[5]==1) {cilia_length_ci = conf_index(track_number,"Track","Cilia_Length", 100);}
 
 
 //time is just 0-100
@@ -683,8 +683,8 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 //	Array.print(plot_time);
 		
 //get the data
-			if (check_plot[5]==1) {cilia_length = mean_index("Track","Cilia_Length", 100);}
-			if (check_plot[5]==1) {cilia_length_ci = conf_index("Track","Cilia_Length", 100);}
+			if (check_plot[5]==1) {cilia_length = mean_index(track_number,"Track", "Cilia_Length", 100);}
+			if (check_plot[5]==1) {cilia_length_ci = conf_index(track_number,"Track","Cilia_Length", 100);}
 
 //plot the data
 		//Set up the graph
@@ -1071,6 +1071,47 @@ function list_no_repeats (table, heading) {
 	return no_repeats;
 }
 
+function list_no_repeats_skip (table, heading, skip) {
+//Returns an array of the entries in a column without repeats to use as an index
+
+//Check whether the table exists
+	if (isOpen(table)) {
+
+//get the entries in the column without repeats
+		
+		var done = false; // used to prematurely terminate loop
+		for (i=0; i<nResults && !done; i++) {
+			if (getResult(skip,i) == 0) {
+			no_repeats = newArray(getResultString(heading, i));
+			done = true;
+		} else {}
+		}
+		
+		for (i=0; i<nResults; i++) {
+			occurence = getResultString(heading, i);
+			skip_flag = getResultString(skip, i);
+			
+			for (j=0; j<no_repeats.length; j++) {
+				if (occurence != no_repeats[j] && skip_flag == 0) {
+					flag = 0;
+				} else {
+						flag = 1;
+					}
+				}
+			
+			if (flag == 0) {
+				occurence = getResultString(heading, i);
+				no_repeats = Array.concat(no_repeats, occurence);	
+			}
+		}
+	} else {
+		Dialog.createNonBlocking("Error");
+		Dialog.addMessage("No table with the title "+table+" found.");
+		Dialog.show();
+	}
+	return no_repeats;
+}
+
 function trim_resample_array (array, length) {
 
 //find the first number above 0 in the array
@@ -1090,8 +1131,8 @@ function trim_resample_array (array, length) {
 	return array;
 }
 
-function mean_index (column1, column2, length) {
-//returns the means for a results table column split by a second column - assumes all datasets are the same length (length)
+function mean_index (index, column1, column2, length) {
+//returns the means for a results table column split by an array of index - assumes all datasets are the same length (length)
 
     mean_values = newArray();
 	
@@ -1101,7 +1142,7 @@ function mean_index (column1, column2, length) {
 	}
 
 //get the identifiers from column2 to usee as the index
-	index = list_no_repeats ("Results", column1);
+	//index = list_no_repeats_skip ("Results", column1, "Seed");
 	count = index.length;
 
 //get the mean values into an array
@@ -1140,8 +1181,8 @@ function mean_index (column1, column2, length) {
 	return mean_values;
 }
 
-function conf_index (column1, column2, length) {
-//returns the 95%CI for a results table column split by a second column - assumes all datasets are the same length (length)
+function conf_index (index, column1, column2, length) {
+//returns the 95%CI for a results table column split by an array of index values - assumes all datasets are the same length (length)
 
     mean_values = newArray();
 	confidence = newArray();
@@ -1155,7 +1196,7 @@ function conf_index (column1, column2, length) {
 	}
 
 //get the identifiers from column2 to use as the index
-	index = list_no_repeats ("Results", column1);
+	//index = list_no_repeats_skip ("Results", column1, "Seed");
 	count = index.length;
 
 //get the mean values into an array
