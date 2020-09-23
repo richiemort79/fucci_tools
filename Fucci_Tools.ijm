@@ -344,19 +344,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		 doplot = Dialog.getCheckbox();
 		 addToArray(doplot, check_plot, i); 
 	}
-
-	//Array.print(check_plot);
-
 	for (i=0; i<type_defaults.length; i++) {
 		 plot_type = Dialog.getCheckbox();
 		 addToArray(plot_type, type_plot, i); 
 	}
-
-	//Array.print(type_plot);
     
 //if the results table is empty prompt for a results table
-	if (isOpen("Results")) {
-	}
+	if (isOpen("Results")) {}
 
 	else {
 		waitForUser("There is no Results table open please select a tracking table or press cancel");
@@ -368,15 +362,16 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		open(tdir+"Results.xls");
 	}
 
+	setBatchMode(true);
+
 //get the track numbers in an array to use as the index
 	track_number = list_no_repeats_skip ("Results", "Track", "Seed");
-	//Array.print(track_number);
 
 //make the arrays and results table for the interpolated plots
 	if (type_plot[1]==true) {
 		data_count = 0;
 		
-		//interpolated data will ahve 100 interpolated time points
+		//interpolated data will have 100 interpolated time points
 		int_plot_time = newArray("0");
 		
 		for (i=1; i<100; i++) {
@@ -436,10 +431,11 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			}   
 	}
 	
-//loop through each track and make the intensity plot
-	   if (type_plot[0]==true) {
-		   for (q=0; q<track_number.length; q++) {
-    
+//loop through each track and make the intensity plot for the individual plots
+		if (type_plot[0]==true) {
+			for (q=0; q<track_number.length-1; q++) {
+				
+//print the normalised data to the log if log-p = true
     		if (log_p == true) {
     			print("Normalised, zeroed data for track #"+track_number[q]+"(Time,Cyan,Green,Red,F.Red,Bright, C. Length)");
     		}
@@ -471,15 +467,15 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		}
 	
 //smooth the data for plotting
-        		if (pro_channel_order[0]>0) {smooth(cyan_profile);}
-				if (pro_channel_order[1]>0) {smooth(green_profile);}
-				if (pro_channel_order[2]>0) {smooth(red_profile);}
-				if (pro_channel_order[3]>0) {smooth(fred_profile);}
-				if (pro_channel_order[4]>0) {smooth(bright_profile);}
-				if (check_plot[5]==1) {smooth(cilia_length);}
+			if (pro_channel_order[0]>0) {smooth(cyan_profile);}
+			if (pro_channel_order[1]>0) {smooth(green_profile);}
+			if (pro_channel_order[2]>0) {smooth(red_profile);}
+			if (pro_channel_order[3]>0) {smooth(fred_profile);}
+			if (pro_channel_order[4]>0) {smooth(bright_profile);}
+			if (check_plot[5]==1) {smooth(cilia_length);}
 
 //normalise the data for plotting    
-        	if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
+    	   	if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
 			if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
 			if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
 			if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
@@ -555,9 +551,6 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			run("Internal Clipboard");
 			selectWindow("Clipboard");
 			rename("Normalised Intensity Plot Track "+track_number[q]);
-    } 
-
-}
 
 //resample the data and write to new table if plot_type[1] = true
 	if (type_plot[1] == true){
@@ -582,8 +575,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 						print(h,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+cilia_plot_time[i]+"\t"+cilia_length[i]);
 					}	
     			}
-			
+	
+			}	
+				setBatchMode(false);
 
+		}
+
+		run("Images to Stack", "name=[Individual Plots Stack] title=[] use");
 
 //open THE INTERPOLATED DATA as a results table
 		selectWindow("Results");
@@ -615,7 +613,6 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		for (i=1; i<100; i++) {
 			plot_time = Array.concat(plot_time, 1+plot_time[i-1]);
 		}
-		Array.print(plot_time);
 
 //plot the data - Set up the graph
 		Plot.create("Interpolated Plot", "Time (minutes)", "Normalised Integrated Density");
@@ -674,6 +671,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		IJ.renameResults("Normalised Interpolated Data");
 	}
 
+
 	if (type_plot[2] == true){
 		
 	
@@ -717,6 +715,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		selectWindow("Results2");
 		IJ.renameResults("Results");
 	}
+
 }
 
 macro "Parse to mdf2 Action Tool - CfffD00D0eD0fD10D14D15D16D17D18D19D1aD1bD1cD1eD1fD20D24D27D2aD2eD2fD30D34D37D3aD3eD3fD40D44D45D46D47D48D49D4aD4bD4cD4eD4fD50D54D57D5aD5eD5fD60D64D67D6aD6eD6fD70D74D75D76D77D78D79D7aD7bD7cD7eD7fD80D84D87D8aD8eD8fD90D94D97D9aD9eD9fDa0Da4Da5Da6Da7Da8Da9DaaDabDacDaeDafDb0Db4Db7DbaDbeDbfDc0Dc4Dc7DcaDceDcfDd0Dd4Dd5Dd6Dd7Dd8Dd9DdaDdbDdcDdeDdfDe0DeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC9c9D5bD6bD85D86D95D96C7adD07D61C8adD02C68bD3dCf66D2bD3bC6beD28D29D38D39D55D56D65D66CbcdD01De1C58bDe6CdddD25D26D35D36D58D59D68D69D8bD9bDb5Db6DbbDc5Dc6DcbC7adD03D04D05D06D13D21D23D31D33D41D43D51D53D63D73D83D93Da3Db3Dc3Dd3C9beD12D22D32D42D52D62D72D82D92Da2Db2Dc2Dd2C79cD91Da1Cfd6Db8Db9Dc8Dc9CeeeD8cD9cDbcDccC57aD9dC89cDd1C9bdD11C69cD0aD0bD0cDb1Dc1Cfa7D88D89D98D99CdedD5cD6cC68bD4dDe4De5C79dD08D09D71D81CfccD2cD3cC68cD1dC58bD5dC57bD6dD7dD8dDe7De8De9C8acD0dDedC68cD2dDe3C79cDe2"
