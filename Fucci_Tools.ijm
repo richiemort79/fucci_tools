@@ -110,8 +110,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	//print(pro_track+"!!"pro_track);
 
 //prompt for calibration of image
-	Dialog.create("Please define your acquisition parameters");
-	Dialog.addMessage("It is advised to use a fucci_tools_profile.txt file");
+	Dialog.create("Please define your acquisition parameters*");
 	Dialog.addMessage("Set the scale and time step for your dataset");
 	Dialog.addNumber("Time Step (min):", pro_time_step);
 	Dialog.addNumber("Scale (um/px):", pro_scale);
@@ -130,7 +129,8 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	Dialog.addNumber("Substack crop size", pro_crop);
 	Dialog.addMessage("Would you like to track a cilia? How often?");
 	Dialog.addCheckbox("Track Cilia", pro_track);
-	Dialog.addNumber("Track Cilia time step", pro_track_step);	
+	Dialog.addNumber("Track Cilia time step", pro_track_step);
+	Dialog.addMessage("*It is advised to use a fucci_tools_profile.txt config file");	
 	Dialog.show();
 	time_step = Dialog.getNumber();
 	cal = Dialog.getNumber();
