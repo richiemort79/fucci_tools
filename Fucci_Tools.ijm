@@ -122,14 +122,14 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
 	Dialog.addMessage("Which channels would you like to view while you track?");
 	Dialog.addString("View while tracking?", pro_view);
-	Dialog.addMessage("Which channels would you like to view while measuring the cilia?");
-	Dialog.addString("View while measuring?", pro_view2);
 	//Dialog.addString("Normalise?", pro_norm);
 	Dialog.addMessage("Define the dimensions of the substack");	
 	Dialog.addNumber("Substack crop size", pro_crop);
 	Dialog.addMessage("Would you like to track a cilia? How often?");
 	Dialog.addCheckbox("Track Cilia", pro_track);
 	Dialog.addNumber("Track Cilia time step", pro_track_step);
+	Dialog.addMessage("Which channels would you like to view while measuring the cilia?");
+	Dialog.addString("View while measuring?", pro_view2);
 	Dialog.addMessage("*It is advised to use a fucci_tools_profile.txt config file");	
 	Dialog.show();
 	time_step = Dialog.getNumber();
@@ -139,12 +139,12 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 	cred = Dialog.getNumber();
 	cfred = Dialog.getNumber();
 	cbright = Dialog.getNumber();
-	view = Dialog.getString();
-	view2 = Dialog.getString();
+	view = Dialog.getString();	
 	norm_c = pro_norm;
 	csize = Dialog.getNumber();
 	moving_roi = Dialog.getCheckbox();
 	m_time_step = Dialog.getNumber();
+	view2 = Dialog.getString();
 
 //set luts dynamically from profile parameters
 	for (i=0; i<pro_channel_order.length; i++) {
