@@ -72,16 +72,15 @@ var	c_angle = 0;
 var mean_intensities = newArray(0,0,0,0,0);
 var int_densities = newArray(0,0,0,0,0);
 
-
 //Variables for plot dialog
 var check_labels = newArray("Cyan","Green","Red","Magenta","Grays", "Cilia Length");
 var check_defaults = newArray(false,true,true,false,false, true);
 var check_plot = newArray(0,0,0,0,0,0);
 
 //Variables for plot types
-var type_labels = newArray("Single","Interpolated Mean","Interpolated Cilia Length","Interpolated Fucci with Cilia Overlay");
-var type_defaults = newArray(true,true,true,true);
-var type_plot = newArray(0,0,0,0);
+var type_labels = newArray("Single","Montage","Interpolated Mean","Interpolated Cilia Length","Interpolated Fucci with Cilia Overlay");
+var type_defaults = newArray(true,false,true,true,true);
+var type_plot = newArray(0,0,0,0,0);
 
 macro "Initialize Action Tool - CeefD25D4cD52Dd6CdddD18CfffD00D01D02D03D0cD0dD0eD0fD10D11D1eD1fD20D27D28D2fD30D35D3aD3fD44D4bD53D5cD72D82Da3DacDb4DbbDc0Dc5DcaDcfDd0Dd7DdfDe0De1DeeDefDf0Df1Df2Df3DfcDfdDfeDffCcccDd4CfffD26D39D62D7dD92Db3Dc4Dc6Dd8CdefD22D2dDd2DddCaaaDe7CeffD04D0bD29D37D38D40D45D4fD54D55D64D6cD73D7bD83D8aD8dD99D9cDa8Db0DbfDc9Df4DfbCdefD5bD6aD6bDa9Db7Db8CcdfD14D41Db1CfffD12D1dD21D2eD34D36D43D63D93Dd1DdeDe2DedCdefD05D0aD13D1cD31D3eD50D5fDa0DafDc1DceDe3DecDf5DfaC58cD97CeefD46D47D56D65D84CdeeD9dCbdfDebCbcdDadCeefD49D4aD58D59D5aD67D68D69D6dD7cD8cDa5Da6Db5Db6Dc7Dc8CcefD06D09D60D6fD90D9fDf6Df9C58cD75D76D77D78D79D86D87D88CeefD48D57D66D94D95Da4CddeD24D42Dd5CcdeD3dCbbcD3cDe6C9aaDbdCeeeD2aCbdfD07D08D70D7fD80D8fDf7Df8CaceD96CeffD3bCdddD71CccdDe5CabbDe9C999D7eD8eCdefD8bD9aD9bDaaDabDb9DbaCcdfD1bDe4CbcdDcdDdcCddeD15D51CcdeD1aDa1Dc2Dd3CbbdDaeCaabD9eDdbCeeeDa2CbdeDa7DbeCdddD17D19D81CccdDc3CaabD6eC9aaDccCdefD23D32CcdfD4eCbcdDdaCcdeD2cCaaaDe8CbceD74D85CddeD16D33D61D91CcddD5dDb2CbbbD4dCbcdD5eDeaCdeeDbcDcbDd9CccdD2b"
 {
@@ -320,19 +319,19 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
 
 macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04D05D06D07D08D09D0aD0bD0cD0dD0eD0fD10D1fD20D24D26D27D2fD30D31D36D3bD3fD40D41D42D43D49D4aD4bD4fD50D51D52D53D59D5aD5fD60D61D62D66D69D6dD6fD70D71D75D76D77D7cD7fD80D81D84D85D86D8cD8dD8fD90D91D94D95D9bD9cD9dD9fDa0Da1Da8DabDacDafDb0Db1Db2Db7Db8DbcDbdDbfDc0Dc1Dc2Dc7Dc8Dc9DcfDd0Dd1Dd2Dd3Dd8Dd9DdaDdbDdfDe0De1De2De3De4DebDecDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC05eD68C9c8D89C26aD6eD7eD8eD9eDaeDbeDceDdeDeeCf66Db3C45bD57C8beD32Da5C6b6D99Da9Ce34D56C37bD18CeccD2bC26bD5eCabaDddC58eD87CefeD2cDcdC493DcbCf33Dd6C26bD1aD1bCbdbD2dCf77D83D92C38dDe5CbceD22C8a8D3cCf56Dd7De9C37cD11D12D13D14D15D16D17CfddD74C66bD45Cf88D65C7aeD58Db6CfeeD3aDc3C483D6bCf22D39De8C16dD97CacaD6cCf66D37C38dDb5CaceDd4C7b6DaaCf55D73Da3Db4CfccDa2C26bD1cD1dD1eD2eD3eD4eCc9bDe6C7aeD67CeefD25C5a4D7aD8aCf33De7C36bD19CcdcD3dCf77D63C38eDc5CeeeD7dDadC8b8D5bDdcCfeeDa4Dc6DeaCfaaD2aC8aeD79CfffD8bDedC484D4cCf12D47C05eD78D88C9c9DbbCf66D82D93Cf44D64CcecD6aC8beDa7C6aeD44D96C4a3DbaCe23D46CcebDb9C48dD33CcdfD21C8b7D9aCf99D54C594DccCbdbDcaC38eD34CacfD98C8b7D7bCeddD28CfaaD72Cf33D55C27dDa6CcdcD4dCf88D48C48eDd5CdefD23CfbbD29C8beD35Ce55Dc4"{
 	
-	Dialog.create("Plotting parameters");
+Dialog.create("Plotting parameters");
 	Dialog.addNumber("Time Step (min):", pro_time_step);
 	Dialog.addNumber("Cyan Channel =", pro_channel_order[0]);
 	Dialog.addNumber("Green Channel =", pro_channel_order[1]);
 	Dialog.addNumber("Red Channel = ", pro_channel_order[2]);
 	Dialog.addNumber("Far-Red =", pro_channel_order[3]);
 	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
-	Dialog.addString("Normalise?", pro_norm);
+	//Dialog.addString("Normalise?", pro_norm);
 	Dialog.addCheckbox("Print to Log?", false);
 	Dialog.addMessage("Choose the features you wish to plot:");
   	Dialog.addCheckboxGroup(3,2,check_labels,check_defaults);
   	Dialog.addMessage("Choose the plot types you wish to see:");
-  	Dialog.addCheckboxGroup(4,1,type_labels,type_defaults);
+  	Dialog.addCheckboxGroup(5,1,type_labels,type_defaults);
 	Dialog.show();
 	time_step = Dialog.getNumber();
 	ccyan = Dialog.getNumber();
@@ -340,7 +339,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	cred = Dialog.getNumber();
 	cfred = Dialog.getNumber();
 	cbright = Dialog.getNumber();
-	norm_c = Dialog.getString();
+	norm_c = pro_norm//Dialog.getString();
 	log_p = Dialog.getCheckbox();
 
 	for (i=0; i<check_defaults.length; i++) {
@@ -365,78 +364,14 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		open(tdir+"Results.xls");
 	}
 
-	setBatchMode(true);
+//START WITH INDIVIDUAL PLOTS
+	if (type_plot[0]==true) {
+//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+		setBatchMode(true);
+		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
 
-//get the track numbers in an array to use as the index
-	track_number = list_no_repeats_skip ("Results", "Track", "Seed");
-
-//make the arrays and results table for the interpolated plots
-	if (type_plot[1]==true) {
-		data_count = 0;
-		
-		//interpolated data will have 100 interpolated time points
-		int_plot_time = newArray("0");
-		
-		for (i=1; i<100; i++) {
-			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
-		}
-		
-		int_red_profile = newArray();
-		int_green_profile = newArray();
-		int_cyan_profile = newArray();
-		int_bright_profile = newArray();
-		int_fred_profile = newArray();
-		int_cilia_length = newArray();
-
-//draws the interpolated tracking table
-    	requires("1.41g");
-		title1 = "Normalised Interpolated Data";
-		title2 = "["+title1+"]";
-		g = title2;
-
-		if (isOpen(title1)) {
-		}
-			else {
-				run("Table...", "name="+title2+" width=1000 height=300");
-				print(g, "\\Headings: \tImage_ID\tTrack\tInt_Time\tCyan\tGreen\tRed\tFar_Red\tBright\tCilia_Length");
-			}   
-	}
-
-//make the arrays and results table for the interpolated plots of cilia length
-	if (type_plot[2]==true) {
-		data_count = 0;
-		
-		//interpolated data will ahve 100 interpolated time points
-		cilia_plot_time = newArray("0");
-		
-		for (i=1; i<100; i++) {
-			cilia_plot_time = Array.concat(cilia_plot_time, 1+int_plot_time[i-1]);
-		}
-		
-		int_red_profile = newArray();
-		int_green_profile = newArray();
-		int_cyan_profile = newArray();
-		int_bright_profile = newArray();
-		int_fred_profile = newArray();
-		int_cilia_length = newArray();
-
-//draws the interpolated cilia length table
-    	requires("1.41g");
-		title1 = "Interpolated Cilia Length";
-		title2 = "["+title1+"]";
-		h = title2;
-
-		if (isOpen(title1)) {
-		}
-			else {
-				run("Table...", "name="+title2+" width=1000 height=300");
-				print(h, "\\Headings: \tImage_ID\tTrack\tCilia_Time\tCilia_Length");
-			}   
-	}
-	
 //loop through each track and make the intensity plot for the individual plots
-		if (type_plot[0]==true) {
-			for (q=0; q<track_number.length-1; q++) {
+		for (q=0; q<track_number.length; q++) {
 				
 //print the normalised data to the log if log-p = true
     		if (log_p == true) {
@@ -488,11 +423,12 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         	zero_time(plot_time);
 
 //Set up the graph
-			Plot.create(image_id+" Track"+track_number[q]+" Normalised Intensity Plot", "Time (minutes)", "Normalised Integrated Density");
-			Plot.setFrameSize(800, 400);
+			Plot.create(image_id+" Track"+track_number[q]+" Normalised Intensity Plot", "Time (minutes)", "Normalised Intensity");
+			Plot.setFrameSize(400, 200);
 			Array.getStatistics(plot_time, min, max, mean, stdDev);
 			Plot.setLimits(0, max, 0, 1);
-			Plot.setLineWidth(2);
+			Plot.setLineWidth(1);
+			Plot.setBackgroundColor("Gray");
 
 //Plot the data 
 			if (pro_channel_order[0]>0 && check_plot[0]==1) {
@@ -502,13 +438,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         		//Plot.update()
 				}
 			if (pro_channel_order[1]>0 && check_plot[1]==1) {
-				Plot.setColor("green");
+				Plot.setColor("yellow");
        			Plot.add("circles", plot_time, green_profile);
         		Plot.add("lines", plot_time, green_profile);
         	//Plot.update()
 				}
 			if (pro_channel_order[2]>0 && check_plot[2]==1) {
-				Plot.setColor("red");
+				Plot.setColor("magenta");
        			Plot.add("circles", plot_time, red_profile);
    		     	Plot.add("lines", plot_time, red_profile);
         	//Plot.update()
@@ -527,12 +463,13 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 				}
 			if (check_plot[5]==1) {
 				Plot.setColor("cyan");
-				Plot.setLineWidth(2);
+				Plot.setLineWidth(1);
    	    		Plot.add("circles", plot_time, cilia_length);
  		       	Plot.add("lines", plot_time, cilia_length);
         	//Plot.update()
 				}
 			Plot.show;
+			run("Set... ", "zoom=100"); 
 				
 //Print the smoothed normalised data to the log	if log_p == true	
 			if (log_p == true) { 
@@ -555,36 +492,114 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			selectWindow("Clipboard");
 			rename("Normalised Intensity Plot Track "+track_number[q]);
 
-//resample the data and write to new table if plot_type[1] = true
-	if (type_plot[1] == true){
-				if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
-				if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
-				if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
-				if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
-				if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
-				if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
 
-//write the data to the new table
-				for (i=0; i<int_plot_time.length; i++) {
-					print(g,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+int_plot_time[i]+"\t"+cyan_profile[i]+"\t"+green_profile[i]+"\t"+red_profile[i]+"\t"+fred_profile[i]+"\t"+bright_profile[i]+"\t"+cilia_length[i]);	
-				}
-
-//trim and resample the cilia length data and write to new table if plot_type[2] = true
-				if (type_plot[2] == true){
-					if (check_plot[5]==1) {cilia_length = trim_resample_array(cilia_length,100);}
-
-//write the data to the new table
-					for (i=0; i<cilia_plot_time.length; i++) {
-						print(h,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+cilia_plot_time[i]+"\t"+cilia_length[i]);
-					}	
-    			}
-	
-			}	
-				setBatchMode(false);
-
+			}		
+		run("Images to Stack", "name=[Individual Plots Stack] title=[] use");
+		//run("Duplicate...", "title=Duplicate");
+		//selectWindow("Duplicate");
+		Stack.getDimensions(width, height, channels, slices, frames);
+		//print(frames);
+		//print(slices);
+		if (type_plot[1] == true) {
+			run("Canvas Size...", "width=483 height=275 position=Top-Left");
+			ncols = round((slices/4)+1);
+			nrows = 4;
+			run("Make Montage...", "columns=&ncols rows=&nrows scale=1 border=0 label keep");
+			selectWindow("Montage");
+			rename("Individual Plots Montage");	
+			}
+		setBatchMode(false);	
 		}
 
-		run("Images to Stack", "name=[Individual Plots Stack] title=[] use");
+
+//THEN INTERPOLATED PLOTS
+
+//make the arrays and results table for the interpolated plots
+	if (type_plot[2]==true) {
+		setBatchMode(true);
+//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+
+		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
+		//data_count = 0;
+		
+		//interpolated data will have 100 interpolated time points
+		int_plot_time = newArray("0");
+		
+		for (i=1; i<100; i++) {
+			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
+		}
+
+//draws the interpolated tracking table
+    	requires("1.41g");
+		title1 = "Normalised Interpolated Data";
+		title2 = "["+title1+"]";
+		g = title2;
+
+		if (isOpen(g)) {
+			selectWindow(g);
+			run("Close");
+		}
+			else {
+				run("Table...", "name="+title2+" width=1000 height=300");
+				print(g, "\\Headings: \tImage_ID\tTrack\tInt_Time\tCyan\tGreen\tRed\tFar_Red\tBright\tCilia_Length");
+			}  
+
+//loop through each track and resample the data for 100 time steps
+		for (q=0; q<track_number.length; q++) {
+
+			//Get number of channels
+    	    max_ch = pro_number_channels;
+
+//Extract values and plot on graph
+			plot_time = newArray;
+			red_profile = newArray();
+			green_profile = newArray();
+			cyan_profile = newArray();
+			bright_profile = newArray();
+			fred_profile = newArray();
+			cilia_length = newArray();
+
+//Get the data into arrays a track at a time to work on - channel number is stored in pro_channel_order[2]
+		for (i=0; i<nResults(); i++){
+			if (getResultString("Track", i) == toString(track_number[q])){	
+				image_id = getResultString("Image_ID",i);
+				plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
+				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
+				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
+				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
+				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
+				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
+				}
+		}
+	
+//smooth the data for plotting
+			if (pro_channel_order[0]>0) {smooth(cyan_profile);}
+			if (pro_channel_order[1]>0) {smooth(green_profile);}
+			if (pro_channel_order[2]>0) {smooth(red_profile);}
+			if (pro_channel_order[3]>0) {smooth(fred_profile);}
+			if (pro_channel_order[4]>0) {smooth(bright_profile);}
+			if (check_plot[5]==1) {smooth(cilia_length);}
+
+//normalise the data for plotting    
+    	   	if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
+			if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
+			if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
+			if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
+			if (check_plot[5]==1) {normalise(cilia_length);}
+
+			if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
+			if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
+			if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
+			if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
+			if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
+			if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
+		
+//write the data to the new table
+			for (i=0; i<int_plot_time.length; i++) {
+				print(g,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+int_plot_time[i]+"\t"+cyan_profile[i]+"\t"+green_profile[i]+"\t"+red_profile[i]+"\t"+fred_profile[i]+"\t"+bright_profile[i]+"\t"+cilia_length[i]);	
+			}
+		}
 
 //open THE INTERPOLATED DATA as a results table
 		selectWindow("Results");
@@ -595,21 +610,39 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		run("Close");
 		open(tdir+"Results.xls");
 
-//get the data
-		if (pro_channel_order[0]>0) {cyan_profile = mean_index(track_number,"Track", "Cyan", 100);}
-		if (pro_channel_order[1]>0) {green_profile = mean_index(track_number,"Track","Green", 100);}
-		if (pro_channel_order[2]>0) {red_profile = mean_index(track_number,"Track", "Red", 100);}
-		if (pro_channel_order[3]>0) {fred_profile = mean_index(track_number,"Track","Far_Red", 100);}
-		if (pro_channel_order[4]>0) {bright_profile = mean_index(track_number,"Track","Bright", 100);}
-		if (check_plot[5]==1) {cilia_length = mean_index(track_number,"Track","Cilia_Length", 100);}
+//get the mean data for each channel into an array
+		if (pro_channel_order[0]>0) {
+			cyan_profile = mean_index(track_number,"Track", "Cyan", 100);
+			cyan_profile = normalise(cyan_profile);
+			}
+		if (pro_channel_order[1]>0) {
+			green_profile = mean_index(track_number,"Track","Green", 100);
+			green_profile = normalise(green_profile);
+			}
+		if (pro_channel_order[2]>0) {
+			red_profile = mean_index(track_number,"Track", "Red", 100);
+			red_profile = normalise(red_profile);
+			}
+		if (pro_channel_order[3]>0) {
+			fred_profile = mean_index(track_number,"Track","Far_Red", 100);
+			fred_profile = normalise(fred_profile);
+			}
+		if (pro_channel_order[4]>0) {
+			bright_profile = mean_index(track_number,"Track","Bright", 100);
+			bright_profile = normalise(bright_profile);
+			}
+		if (check_plot[5]==1) {
+			cilia_length = mean_index(track_number,"Track","Cilia_Length", 100);
+			cilia_length = normalise(cilia_length);
+			}
 
+//get the confidence interval for each channel into an array
 		if (pro_channel_order[0]>0) {cyan_profile_ci = conf_index(track_number,"Track","Cyan", 100);}
 		if (pro_channel_order[1]>0) {green_profile_ci = conf_index(track_number,"Track","Green", 100);}
 		if (pro_channel_order[2]>0) {red_profile_ci = conf_index(track_number,"Track","Red", 100);}
 		if (pro_channel_order[3]>0) {fred_profile_ci = conf_index(track_number,"Track","Far_Red", 100);}
 		if (pro_channel_order[4]>0) {bright_profile_ci = conf_index(track_number,"Track","Bright", 100);}
 		if (check_plot[5]==1) {cilia_length_ci = conf_index(track_number,"Track","Cilia_Length", 100);}
-
 
 //time is just 0-100
 		plot_time = newArray("0");
@@ -618,11 +651,12 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		}
 
 //plot the data - Set up the graph
-		Plot.create("Interpolated Plot", "Time (minutes)", "Normalised Integrated Density");
-		Plot.setFrameSize(800, 400);
+		Plot.create("Interpolated Plot", "Time (% total)", "Normalised Intensity");
+		Plot.setFrameSize(400, 200);
 		Array.getStatistics(plot_time, min, max, mean, stdDev);
 		Plot.setLimits(0, max, 0, 1);
-		Plot.setLineWidth(2);
+		Plot.setLineWidth(1);
+		Plot.setBackgroundColor("gray");
 
 //Plot the data 
 		if (pro_channel_order[0]>0 && check_plot[0]==1) {
@@ -633,14 +667,14 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
         	//Plot.update()
 			}
 		if (pro_channel_order[1]>0 && check_plot[1]==1) {
-			Plot.setColor("green");
+			Plot.setColor("yellow");
        		Plot.add("circles", plot_time, green_profile);
         	Plot.add("lines", plot_time, green_profile);
         	Plot.add("error bars", plot_time, green_profile_ci);
         	//Plot.update()
 			}
 		if (pro_channel_order[2]>0 && check_plot[2]==1) {
-			Plot.setColor("red");
+			Plot.setColor("magenta");
        		Plot.add("circles", plot_time, red_profile);
         	Plot.add("lines", plot_time, red_profile);
         	Plot.add("error bars", plot_time, red_profile_ci);
@@ -662,23 +696,88 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 			}
 		if (check_plot[5]==1) {
 			Plot.setColor("cyan");
-			Plot.setLineWidth(2);
+			Plot.setLineWidth(1);
        		Plot.add("circles", plot_time, cilia_length);
         	Plot.add("lines", plot_time, cilia_length);
         	Plot.add("error bars", plot_time, cilia_length_ci);
         	//Plot.update()
 			}
 		Plot.show;
+		run("Set... ", "zoom=100"); 
 
 		selectWindow("Results");
 		IJ.renameResults("Normalised Interpolated Data");
-	}
-
-
-	if (type_plot[2] == true){
+		selectWindow("Results2");
+		IJ.renameResults("Results");
+	setBatchMode(false);	
+}
 		
-	
+//THEN INTERPOLATED CILIA PLOTS
+	if (type_plot[3] == true && check_plot[5]==1){	
+setBatchMode(true);
+		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
+
+		
+//draws the interpolated cilia length table
+    	requires("1.41g");
+		title1 = "Interpolated Cilia Length";
+		title2 = "["+title1+"]";
+		h = title2;
+
+		if (isOpen(h)) {
+			selectWindow(h);
+			run("Close");
+		}
+			else {
+				run("Table...", "name="+title2+" width=1000 height=300");
+				print(h, "\\Headings: \tImage_ID\tTrack\tCilia_Time\tCilia_Length");
+			}  
+
+		//interpolated data will have 100 interpolated time points
+		cilia_plot_time = newArray("0");
+		
+		for (i=1; i<100; i++) {
+			cilia_plot_time = Array.concat(cilia_plot_time, 1+cilia_plot_time[i-1]);
+		}
+		
+//loop through each track and resample the data for 100 time steps
+		for (q=0; q<track_number.length; q++) {
+
+
+			cilia_length = newArray();
+
+			for (i=0; i<nResults(); i++){
+				if (getResultString("Track", i) == toString(track_number[q])){	
+					image_id = getResultString("Image_ID",i);
+					cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
+				}
+
+			//Array.print(cilia_length);
+
+
+//trim and resample the cilia length data and write to new table if plot_type[2] = true
+				
+			cilia_length = trim_resample_array(cilia_length,100);
+	//		Array.print(cilia_length);
+
+
+
+//normalise and smooth cilia length
+
+			cilia_length = normalise(cilia_length);
+		//	Array.print(cilia_length);
+
+//write the data to the new table
+					for (i=0; i<cilia_plot_time.length; i++) {
+						print(h,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+cilia_plot_time[i]+"\t"+cilia_length[i]);
+					}	
+
+
+		}
+
 //open THE INTERPOLATED CILIA LENGTHS AS A RESULTS TABLE
+		selectWindow("Results");
+		IJ.renameResults("Results2");
 		selectWindow("Interpolated Cilia Length");
 		tdir = getDirectory("temp");
 		saveAs("Text", tdir+"Results.xls");
@@ -692,33 +791,266 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 		}
 		
 //get the data
-		if (check_plot[5]==1) {cilia_length = mean_index(track_number,"Track", "Cilia_Length", 100);}
+		if (check_plot[5]==1) {
+			cilia_length = mean_index(track_number,"Track", "Cilia_Length", 100);
+			cilia_length = normalise(cilia_length);
+			}
 		if (check_plot[5]==1) {cilia_length_ci = conf_index(track_number,"Track","Cilia_Length", 100);}
 
 //plot the data
 		//Set up the graph
-		Plot.create("Cilia Length - Interpolated Plot", "Time", "Length");
-		Plot.setFrameSize(800, 400);
+		Plot.create("Interpolated Cilia Length", "Time (% of total)", "Normalised Cilia Length");
+		Plot.setFrameSize(400, 200);
 		Array.getStatistics(plot_time, min, max, mean, stdDev);
 		Plot.setLimits(0, max, 0, 1);
-		Plot.setLineWidth(2);
+		Plot.setLineWidth(1);
+		Plot.setBackgroundColor("Gray");
 
 //Plot the data 
 		if (check_plot[5]==1) {
 			Plot.setColor("cyan");
-			Plot.setLineWidth(2);
+			Plot.setLineWidth(1);
        		Plot.add("circles", plot_time, cilia_length);
         	Plot.add("lines", plot_time, cilia_length);
         	Plot.add("error bars", plot_time, cilia_length_ci);
 			}
-			Plot.show;	
+			Plot.show;
+			run("Set... ", "zoom=100"); 
+			
 //Tidy up the tables
 		selectWindow("Results");
 		IJ.renameResults("Interpolated Cilia Length");
 		selectWindow("Results2");
 		IJ.renameResults("Results");
+		setBatchMode(false);
 	}
 
+//THEN INTERPOLATED PLOT WITH OVERLAY CILIA
+
+//make the arrays and results table for the interpolated plots
+	if (type_plot[4]==true) {
+		setBatchMode(true);
+//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+
+		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
+		//data_count = 0;
+		
+		//interpolated data will have 100 interpolated time points
+		int_plot_time = newArray("0");
+		
+		for (i=1; i<100; i++) {
+			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
+		}
+
+		//Array.print(int_plot_time);
+//draws the interpolated tracking table
+    	requires("1.41g");
+		title1 = "Normalised Interpolated Data";
+		title2 = "["+title1+"]";
+		g = title2;
+
+		if (isOpen(g)) {
+			selectWindow(g);
+			run("Close");
+		}
+			else {
+				run("Table...", "name="+title2+" width=1000 height=300");
+				print(g, "\\Headings: \tImage_ID\tTrack\tInt_Time\tCyan\tGreen\tRed\tFar_Red\tBright\tCilia_Length");
+			}  
+
+//get the start and end of each cilia in an array to match track_number
+
+	cilia_start = newArray();
+	cilia_end = newArray();
+
+
+//loop through each track and resample the data for 100 time steps
+		for (q=0; q<track_number.length; q++) {
+
+			//Get number of channels
+    	    max_ch = pro_number_channels;
+
+//Extract values and plot on graph
+			plot_time = newArray;
+			red_profile = newArray();
+			green_profile = newArray();
+			cyan_profile = newArray();
+			bright_profile = newArray();
+			fred_profile = newArray();
+			cilia_length = newArray();
+
+//Get the data into arrays a track at a time to work on - channel number is stored in pro_channel_order[2]
+		for (i=0; i<nResults(); i++){
+			if (getResultString("Track", i) == toString(track_number[q])){	
+				image_id = getResultString("Image_ID",i);
+				plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
+				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
+				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
+				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
+				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
+				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
+				}
+		}
+
+		
+//smooth the data for plotting
+			if (pro_channel_order[0]>0) {smooth(cyan_profile);}
+			if (pro_channel_order[1]>0) {smooth(green_profile);}
+			if (pro_channel_order[2]>0) {smooth(red_profile);}
+			if (pro_channel_order[3]>0) {smooth(fred_profile);}
+			if (pro_channel_order[4]>0) {smooth(bright_profile);}
+			if (check_plot[5]==1) {smooth(cilia_length);}
+
+//normalise the data for plotting    
+    	   	if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
+			if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
+			if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
+			if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
+			if (check_plot[5]==1) {normalise(cilia_length);}
+
+//resample the data
+			if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
+			if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
+			if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
+			if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
+			if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
+			if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
+		
+//write the data to the new table
+			for (i=0; i<int_plot_time.length; i++) {
+				print(g,(number++)+"\t"+image_id+"\t"+track_number[q]+"\t"+int_plot_time[i]+"\t"+cyan_profile[i]+"\t"+green_profile[i]+"\t"+red_profile[i]+"\t"+fred_profile[i]+"\t"+bright_profile[i]+"\t"+cilia_length[i]);	
+			}
+
+		c_start = get_start(cilia_length);		
+		c_end = get_end(cilia_length);
+		cilia_start = Array.concat(cilia_start, int_plot_time[c_start]);		
+		cilia_end = Array.concat(cilia_end, int_plot_time[c_end]);
+			
+		}
+
+//open THE INTERPOLATED DATA as a results table
+		selectWindow("Results");
+		IJ.renameResults("Results2");
+		selectWindow("Normalised Interpolated Data");
+		tdir = getDirectory("temp");
+		saveAs("Text", tdir+"Results.xls");
+		run("Close");
+		open(tdir+"Results.xls");
+
+//get the new track list as some tracks may have been thrown out
+	track_number = list_no_repeats ("Results", "Track");
+
+//get the mean data for each channel into an array
+		if (pro_channel_order[0]>0) {
+			cyan_profile = mean_index(track_number,"Track", "Cyan", 100);
+			cyan_profile = normalise(cyan_profile);
+			}
+		if (pro_channel_order[1]>0) {
+			green_profile = mean_index(track_number,"Track","Green", 100);
+			green_profile = normalise(green_profile);
+			}
+		if (pro_channel_order[2]>0) {
+			red_profile = mean_index(track_number,"Track", "Red", 100);
+			red_profile = normalise(red_profile);
+			}
+		if (pro_channel_order[3]>0) {
+			fred_profile = mean_index(track_number,"Track","Far_Red", 100);
+			fred_profile = normalise(fred_profile);
+			}
+		if (pro_channel_order[4]>0) {
+			bright_profile = mean_index(track_number,"Track","Bright", 100);
+			bright_profile = normalise(bright_profile);
+			}
+		if (check_plot[5]==1) {
+			cilia_length = mean_index(track_number,"Track","Cilia_Length", 100);
+			cilia_length = normalise(cilia_length);
+			}
+
+//get the confidence interval for each channel into an array
+		if (pro_channel_order[0]>0) {cyan_profile_ci = conf_index(track_number,"Track","Cyan", 100);}
+		if (pro_channel_order[1]>0) {green_profile_ci = conf_index(track_number,"Track","Green", 100);}
+		if (pro_channel_order[2]>0) {red_profile_ci = conf_index(track_number,"Track","Red", 100);}
+		if (pro_channel_order[3]>0) {fred_profile_ci = conf_index(track_number,"Track","Far_Red", 100);}
+		if (pro_channel_order[4]>0) {bright_profile_ci = conf_index(track_number,"Track","Bright", 100);}
+		if (check_plot[5]==1) {cilia_length_ci = conf_index(track_number,"Track","Cilia_Length", 100);}
+
+//time is just 0-100
+		plot_time = newArray("0");
+		for (i=1; i<100; i++) {
+			plot_time = Array.concat(plot_time, 1+plot_time[i-1]);
+		}
+
+//plot the data - Set up the graph
+		Plot.create("Interpolated Plot and Cilia Overlay", "Time (% of total)", "Normalised Intensity");
+		Plot.setFrameSize(400, 200);
+		Array.getStatistics(plot_time, min, max, mean, stdDev);
+		Plot.setLimits(0, max, 0, 1);
+		Plot.setLineWidth(1);
+		Plot.setBackgroundColor("gray");
+
+//Plot the data 
+		if (pro_channel_order[0]>0 && check_plot[0]==1) {
+			Plot.setColor("cyan");
+       		Plot.add("circles", plot_time, cyan_profile);
+        	Plot.add("lines", plot_time, cyan_profile);
+        	Plot.add("error bars", plot_time, cyan_profile_ci);
+        	//Plot.update()
+			}
+		if (pro_channel_order[1]>0 && check_plot[1]==1) {
+			Plot.setColor("yellow");
+       		Plot.add("circles", plot_time, green_profile);
+        	Plot.add("lines", plot_time, green_profile);
+        	Plot.add("error bars", plot_time, green_profile_ci);
+        	//Plot.update()
+			}
+		if (pro_channel_order[2]>0 && check_plot[2]==1) {
+			Plot.setColor("magenta");
+       		Plot.add("circles", plot_time, red_profile);
+        	Plot.add("lines", plot_time, red_profile);
+        	Plot.add("error bars", plot_time, red_profile_ci);
+        	//Plot.update()
+			}
+		if (pro_channel_order[3]>0 && check_plot[3]==1) {
+			Plot.setColor("magenta");
+       		Plot.add("circles", plot_time, fred_profile);
+        	Plot.add("lines", plot_time, fred_profile);
+        	Plot.add("error bars", plot_time, fred_profile_ci);
+        	//Plot.update()
+			}
+		if (pro_channel_order[4]>0 && check_plot[4]==1) {
+			Plot.setColor("gray");
+       		Plot.add("circles", plot_time, bright_profile);
+        	Plot.add("lines", plot_time, bright_profile);
+        	Plot.add("error bars", plot_time, bright_profile_ci);
+        	//Plot.update()
+			}
+		if (check_plot[5]==1) {
+
+			y_point = 0;
+			y_points = newArray();
+			for (i=0; i<track_number.length; i++) {
+				
+			y_point = y_point + 1/(track_number.length+1);
+			y_points = Array.concat(y_points,y_point);
+			Plot.setColor("cyan");
+			Plot.setLineWidth(1);
+       		Plot.drawLine(cilia_start[i], y_point, cilia_end[i], y_point);
+       		
+			}
+			Plot.add("circle", cilia_start, y_points);
+			Plot.add("circle", cilia_end, y_points);
+		}
+		Plot.show;
+		run("Set... ", "zoom=100"); 
+
+		selectWindow("Results");
+		IJ.renameResults("Normalised Interpolated Data");
+		selectWindow("Results2");
+		IJ.renameResults("Results");
+	}
+	setBatchMode(false);
+	
 }
 
 macro "Parse to mdf2 Action Tool - CfffD00D0eD0fD10D14D15D16D17D18D19D1aD1bD1cD1eD1fD20D24D27D2aD2eD2fD30D34D37D3aD3eD3fD40D44D45D46D47D48D49D4aD4bD4cD4eD4fD50D54D57D5aD5eD5fD60D64D67D6aD6eD6fD70D74D75D76D77D78D79D7aD7bD7cD7eD7fD80D84D87D8aD8eD8fD90D94D97D9aD9eD9fDa0Da4Da5Da6Da7Da8Da9DaaDabDacDaeDafDb0Db4Db7DbaDbeDbfDc0Dc4Dc7DcaDceDcfDd0Dd4Dd5Dd6Dd7Dd8Dd9DdaDdbDdcDdeDdfDe0DeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC9c9D5bD6bD85D86D95D96C7adD07D61C8adD02C68bD3dCf66D2bD3bC6beD28D29D38D39D55D56D65D66CbcdD01De1C58bDe6CdddD25D26D35D36D58D59D68D69D8bD9bDb5Db6DbbDc5Dc6DcbC7adD03D04D05D06D13D21D23D31D33D41D43D51D53D63D73D83D93Da3Db3Dc3Dd3C9beD12D22D32D42D52D62D72D82D92Da2Db2Dc2Dd2C79cD91Da1Cfd6Db8Db9Dc8Dc9CeeeD8cD9cDbcDccC57aD9dC89cDd1C9bdD11C69cD0aD0bD0cDb1Dc1Cfa7D88D89D98D99CdedD5cD6cC68bD4dDe4De5C79dD08D09D71D81CfccD2cD3cC68cD1dC58bD5dC57bD6dD7dD8dDe7De8De9C8acD0dDedC68cD2dDe3C79cDe2"
@@ -1280,6 +1612,44 @@ function conf_index (index, column1, column2, length) {
 		}
 	}
 	return confidence;
+}
+
+function get_start(array) {
+
+//find the first entry above 0 in the array and return index
+var done = false; // used to prematurely terminate loop 
+	for (i=0; i<array.length && !done; i++) {
+		if (array[i] > 0){
+				start = i;
+				done = true;
+				} else {
+					start = 0;
+				}
+	}
+
+	return start;
+}
+
+function get_end(array) {
+//find the last entry above 0 in the array and return index
+
+//explicitly make a new array to get aorund bug with reversing arrays
+	for (i=0; i<array.length; i++) {
+		array2 = Array.concat(array2,array[i]);
+	}
+	array2 = Array.reverse(array2);
+	
+	var done = false; // used to prematurely terminate loop 
+	for (i=0; i<array2.length && !done; i++) {
+		if (array2[i] > 0){
+				end = i+2;
+				done = true;
+				} else {
+					end = 0;
+				}
+	}
+	end = array2.length-end;
+	return end;
 }
 
 //Icons used courtesy of: http://www.famfamfam.com/lab/icons/silk/
