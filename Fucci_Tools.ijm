@@ -70,7 +70,7 @@ var	c_angle = 0;
 
 //Gloabal variables for intensities
 var mean_intensities = newArray(0,0,0,0,0);
-var int_densities = newArray(0,0,0,0,0);
+//var int_densities = newArray(0,0,0,0,0);
 
 //Variables for plot dialog
 var check_labels = newArray("Cyan","Green","Red","Magenta","Grays", "Cilia Length");
@@ -1075,23 +1075,11 @@ function fucci_measure(image, x, y, dia) {
 		makeOval(x1, y1, dia, dia);
 		run("Measure");	
 		addToArray(getResult("Mean", 0), mean_intensities, i-1);
-		addToArray(getResult("IntDen", 0), int_densities, i-1);
+		//addToArray(getResult("IntDen", 0), int_densities, i-1);
 		selectWindow("Results");
 		run("Close");
 		}
 		
-	//	ch1_mean = getResult("Mean", 0);
-	//	ch2_mean = getResult("Mean", 1);
-	//	ch3_mean = getResult("Mean", 2);
-	//	ch4_mean = getResult("Mean", 3);
-	//	ch5_mean = getResult("Mean", 4);
-	//	ch1_int = getResult("IntDen", 0);
-	//	ch2_int = getResult("IntDen", 1);
-	//	ch3_int = getResult("IntDen", 2);
-	//	ch4_int = getResult("IntDen", 3);
-	//	ch5_int = getResult("IntDen", 4);	
-	//	selectWindow("Results");
-	//	run("Close");
 }
 
 function zero_time (array) {
