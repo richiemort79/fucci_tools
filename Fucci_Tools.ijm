@@ -307,7 +307,7 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
 	selectWindow(Image);
 	run("Colors...", "foreground=white background=white selection=yellow");
 	run("Overlay Options...", "stroke=yellow width=0 fill=none");
-	setSlice(mitosis_frame);
+	setSlice(mitosis_frame+1);
 	makePoint(mitosis_x, mitosis_y);
     //run("Colors...", "foreground=white background=white selection=cyan");
     run("Enlarge...", "enlarge=25");
