@@ -8,7 +8,7 @@ var track  = 1;
 var number = 1;
 
 //Global variables for mitosis tracking
-var is_seed = true;//are we on a seed track or a daughter track?
+var is_mother = true;//are we on a mother track or a daughter track?
 var daughter = "";//this is either a or b and is appended to gtrack in the results table
 var mitosis_frame = "";//remember when the mitosis happened so we can go back to track the second daughter
 var mitosis_x = 0; //remember where the mitosis happened so we can go back to track the second daughter
@@ -185,7 +185,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 	}
 		else {
 			run("Table...", "name="+title2+" width=1000 height=300");
-			print(f, "\\Headings: \tImage_ID\tTrack\tSeed\tFrame\tX\tY\tCh1_Mean\tCh2_Mean\tCh3_Mean\tCh4_Mean\tCh5_Mean\tCilia_COMX\tCilia_COMY\tDistance_to_Cilia_(um)\tLength\tFeret\tStraightness\tKurt\tSkew\tAngle");
+			print(f, "\\Headings: \tImage_ID\tTrack\tMother?\tFrame\tX\tY\tCh1_Mean\tCh2_Mean\tCh3_Mean\tCh4_Mean\tCh5_Mean\tCilia_COMX\tCilia_COMY\tDistance_to_Cilia_(um)\tLength\tFeret\tStraightness\tKurt\tSkew\tAngle");
 		}   
     
     autoUpdate(false);
@@ -234,7 +234,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
     Stack.setActiveChannels(view);
 
 //print results to the tracking table
-	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
+	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_mother+"\t"+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
 	//last_line = ""+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
 	  
 }
@@ -250,7 +250,7 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     } else {}
     waitForUser("A new track ("+gtrack+") has been added to the analysis. If it exists the substack has been renamed as Track_"+gtrack-1+"_Substack. Please select the tracking button and continue");
     gtrack++;
-	is_seed = true;//are we on a seed track or a daughter track?
+	is_mother = true;//are we on a mother track or a daughter track?
  	daughter = "";//this is either a or b and is appended to gtrack in the results table
 	mitosis_frame = 0;//remember when the mitosis happened so we can go back to track the second daughter
 	mitosis = "";//forget this string
@@ -264,7 +264,7 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
 
 macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD0fD10D11D12D13D14D15D16D17D1dD1eD1fD20D21D22D23D24D25D2eD2fD30D31D32D33D34D3fD40D41D42D43D44D4fD50D51D52D53D5eD5fD60D69D6aD6dD6eD6fD70D78D79D7aD7cD7dD7eD7fD80D88D89D8aD8cD8dD8eD8fD90D99D9aD9dD9eD9fDa0Da1Da2Da3DaeDafDb0Db1Db2Db3Db4DbfDc0Dc1Dc2Dc3Dc4DcfDd0Dd1Dd2Dd3Dd4Dd5DdeDdfDe0De1De2De3De4De5De6De7DedDeeDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfcDfdDfeDffC8c8Db7C6b6D27D28CacaDfbC494DaaC9c9D98C7b7D6bD72D76D82D83CbeaD3eC483D63Dd7Dd8C9c8D56D57D66Db9DbaDcaDcbDccC7b7D46D77D86CadaD1cC6a6D67D95DdcC9d9D48C8c7D1bD2cD4dCefeD35C373D61C8c8D2bD3dDc9C7b6D58D65D9bDabDacDbdDc7DcdCadaD4bD4cDceC695DebC9c9DddC7c7D73CcdcDa4C484D94C8a7Db5CbdaD7bC6a6DdbCad9D38D39D49D4aD6cCefeD18D19D1aDeaC372D71C8b8DecC6b6D29Cad9D3aC5a5D36C9c9D47D9cDbbDbcC8c7D5bCbdbDd6C484Dd9CadaD2dD3bD3cD5dCefeDe9C373D62D93Da5Dc6CadaD8bC6a5D5aCac9D68DadC8c7D5cD74D84D85Da6Da7CeeeDc5De8C494D55Da9DdaCbdaD4eC7a7D87C272D81D92C8c8D37D75D96Db8Dc8C594D64CbebD0bC6a5D97Da8Db6CdedD54C9b8D45C7b6D2aCadaDbeC5a5D59CcecD26"
 {	
-	is_seed = false;//are we on a seed track or a daughter track?
+	is_mother = false;//are we on a mother track or a daughter track?
 
 	if (isOpen("Substack")) { 
     	selectWindow("Substack"); 
@@ -366,7 +366,7 @@ Dialog.create("Plotting parameters");
 
 //START WITH INDIVIDUAL PLOTS
 	if (type_plot[0]==true) {
-//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
 		setBatchMode(true);
 		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
 
@@ -517,7 +517,7 @@ Dialog.create("Plotting parameters");
 //make the arrays and results table for the interpolated plots
 	if (type_plot[2]==true) {
 		setBatchMode(true);
-//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
 
 		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
 		//data_count = 0;
@@ -830,7 +830,7 @@ setBatchMode(true);
 //make the arrays and results table for the interpolated plots
 	if (type_plot[4]==true) {
 		setBatchMode(true);
-//get the track numbers in an array to use as the index - skips seed tarck which are not comlete mitoses
+//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
 
 		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
 		//data_count = 0;
