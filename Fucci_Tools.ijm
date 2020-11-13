@@ -1285,9 +1285,10 @@ function crop_new (image, x, y, size){
 
 	if (isOpen("Substack")) { } else {
 		//newImage("Substack", "8-bit composite-mode", swidth, sheight, pro_number_channels, 1, frames);
-		newImage("Substack", "8-bit composite-mode", swidth, sheight, channels, slices, frames);
+		newImage("Substack", "8-bit composite-mode", swidth, sheight, pro_number_channels, slices, frames);
 		run(type+"-bit");
 
+	selectWindow("Substack");
 //set luts dynamically from profile parameters
 		for (i=0; i<pro_channel_order.length; i++) {
 			if (pro_channel_order[i] > 0) {
@@ -1295,7 +1296,7 @@ function crop_new (image, x, y, size){
 				run(pro_channels[i]);
 			}
 		}
-
+	selectWindow("Substack");
 	Stack.setDisplayMode("composite");
 	Stack.setActiveChannels(view);
 	Stack.setDisplayMode("composite");
