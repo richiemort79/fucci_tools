@@ -14,7 +14,7 @@ var mitosis_frame = "";//remember when the mitosis happened so we can go back to
 var mitosis_x = 0; //remember where the mitosis happened so we can go back to track the second daughter
 var mitosis_y = 0; //remember where the mitosis happened so we can go back to track the second daughter
 var mitosis = "";//string to print to table
-var last_line = "";//keep record of last entry in 
+//var last_line = "";//keep record of last entry in 
 var posx = 0;//position you click
 var posy = 0;//position you click
 
@@ -235,7 +235,7 @@ macro "Interactive Measure Channel Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D0
 
 //print results to the tracking table
 	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_seed+"\t"+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
-	last_line = ""+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
+	//last_line = ""+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+int_densities[0]+"\t"+int_densities[1]+"\t"+int_densities[2]+"\t"+int_densities[3]+"\t"+int_densities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle;
 	  
 }
 
@@ -286,8 +286,8 @@ macro "Add Mitosis Action Tool - CfffD00D01D02D03D04D05D06D07D08D09D0aD0cD0dD0eD
 	mitosis_y = posy;
 	waitForUser("A mitosis has been recorded and the track has switched to "+gtrack+daughter);
 	//get the last line of the table to use as the first timepoint
-	mitosis = last_line;
-	print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
+	//mitosis = last_line;
+	//print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
 	//need to remember location and get an ROI for that
 }
 
@@ -314,7 +314,7 @@ macro "Switch Daughter Action Tool - CcdcD98C696DbcCfffD00D01D02D07D08D0dD0eD0fD
     //run("Add Selection...");
 	
 	waitForUser("The track has switched to "+gtrack+daughter);
-	print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
+	//print(f,(number++)+"\t"+Image+"\t"+gtrack+daughter+"\t"+is_seed+"\t"+mitosis);
 }
 
 macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04D05D06D07D08D09D0aD0bD0cD0dD0eD0fD10D1fD20D24D26D27D2fD30D31D36D3bD3fD40D41D42D43D49D4aD4bD4fD50D51D52D53D59D5aD5fD60D61D62D66D69D6dD6fD70D71D75D76D77D7cD7fD80D81D84D85D86D8cD8dD8fD90D91D94D95D9bD9cD9dD9fDa0Da1Da8DabDacDafDb0Db1Db2Db7Db8DbcDbdDbfDc0Dc1Dc2Dc7Dc8Dc9DcfDd0Dd1Dd2Dd3Dd8Dd9DdaDdbDdfDe0De1De2De3De4DebDecDefDf0Df1Df2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeDffC05eD68C9c8D89C26aD6eD7eD8eD9eDaeDbeDceDdeDeeCf66Db3C45bD57C8beD32Da5C6b6D99Da9Ce34D56C37bD18CeccD2bC26bD5eCabaDddC58eD87CefeD2cDcdC493DcbCf33Dd6C26bD1aD1bCbdbD2dCf77D83D92C38dDe5CbceD22C8a8D3cCf56Dd7De9C37cD11D12D13D14D15D16D17CfddD74C66bD45Cf88D65C7aeD58Db6CfeeD3aDc3C483D6bCf22D39De8C16dD97CacaD6cCf66D37C38dDb5CaceDd4C7b6DaaCf55D73Da3Db4CfccDa2C26bD1cD1dD1eD2eD3eD4eCc9bDe6C7aeD67CeefD25C5a4D7aD8aCf33De7C36bD19CcdcD3dCf77D63C38eDc5CeeeD7dDadC8b8D5bDdcCfeeDa4Dc6DeaCfaaD2aC8aeD79CfffD8bDedC484D4cCf12D47C05eD78D88C9c9DbbCf66D82D93Cf44D64CcecD6aC8beDa7C6aeD44D96C4a3DbaCe23D46CcebDb9C48dD33CcdfD21C8b7D9aCf99D54C594DccCbdbDcaC38eD34CacfD98C8b7D7bCeddD28CfaaD72Cf33D55C27dDa6CcdcD4dCf88D48C48eDd5CdefD23CfbbD29C8beD35Ce55Dc4"{
