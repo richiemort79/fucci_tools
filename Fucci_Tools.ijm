@@ -221,7 +221,7 @@ macro "Interactive Measure Tool - C8aeD3aD49D4aC37dD7fCfffD00D01D02D03D04D05D06D
 	}
 
 //return back to measure/track tool
-	setTool("Interactive Measure Channel Tool");
+	setTool("Interactive Measure Tool");
     makeOval(x-1,y-1,3,3);
 	run("Add Selection...");
 	makePoint(x, y);
