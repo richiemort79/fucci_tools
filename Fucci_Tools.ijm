@@ -438,13 +438,13 @@ Dialog.create("Plotting parameters");
         		//Plot.update()
 				}
 			if (pro_channel_order[1]>0 && check_plot[1]==1) {
-				Plot.setColor("yellow");
+				Plot.setColor("green");
        			Plot.add("circles", plot_time, green_profile);
         		Plot.add("lines", plot_time, green_profile);
         	//Plot.update()
 				}
 			if (pro_channel_order[2]>0 && check_plot[2]==1) {
-				Plot.setColor("magenta");
+				Plot.setColor("red");
        			Plot.add("circles", plot_time, red_profile);
    		     	Plot.add("lines", plot_time, red_profile);
         	//Plot.update()
@@ -667,14 +667,14 @@ Dialog.create("Plotting parameters");
         	//Plot.update()
 			}
 		if (pro_channel_order[1]>0 && check_plot[1]==1) {
-			Plot.setColor("yellow");
+			Plot.setColor("green");
        		Plot.add("circles", plot_time, green_profile);
         	Plot.add("lines", plot_time, green_profile);
         	Plot.add("error bars", plot_time, green_profile_ci);
         	//Plot.update()
 			}
 		if (pro_channel_order[2]>0 && check_plot[2]==1) {
-			Plot.setColor("magenta");
+			Plot.setColor("red");
        		Plot.add("circles", plot_time, red_profile);
         	Plot.add("lines", plot_time, red_profile);
         	Plot.add("error bars", plot_time, red_profile_ci);
@@ -998,14 +998,14 @@ setBatchMode(true);
         	//Plot.update()
 			}
 		if (pro_channel_order[1]>0 && check_plot[1]==1) {
-			Plot.setColor("yellow");
+			Plot.setColor("green");
        		Plot.add("circles", plot_time, green_profile);
         	Plot.add("lines", plot_time, green_profile);
         	Plot.add("error bars", plot_time, green_profile_ci);
         	//Plot.update()
 			}
 		if (pro_channel_order[2]>0 && check_plot[2]==1) {
-			Plot.setColor("magenta");
+			Plot.setColor("red");
        		Plot.add("circles", plot_time, red_profile);
         	Plot.add("lines", plot_time, red_profile);
         	Plot.add("error bars", plot_time, red_profile_ci);
