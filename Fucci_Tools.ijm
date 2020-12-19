@@ -1444,20 +1444,39 @@ function list_no_repeats_skip (table, heading, skip) {
 
 function trim_resample_array (array, length) {
 
-//find the first number above 0 in the array
+//find the first number above 0 in the array and trim all but one 0 do the same at the end
+
+	array2 = newArray();
+
+//explicitly make a new array to get aorund bug with reversing arrays
+	for (i=0; i<array.length; i++) {
+		array2 = Array.concat(array2,array[i]);
+	}
+		
 	var done = false; // used to prematurely terminate loop 
 	for (i=0; i<array.length && !done; i++) {
 		if (array[i] > 0){
-				start = i;
+				start = i-1;
 				done = true;
 				} else {
 					start = 0;
 				}
 	}
 
-	array = Array.slice(array,start,array.length);
-	array = Array.resample(array, 100); 
+	array2 = Array.reverse(array2); 
 	
+	var done = false; // used to prematurely terminate loop 
+	for (i=0; i<array2.length && !done; i++) {
+		if (array2[i] > 0){
+				end = i-1;
+				done = true;
+				} else {
+					end = 0;
+				}
+	}
+	end = array2.length-end;
+	array = Array.slice(array,start,end);
+	array = Array.resample(array, length);
 	return array;
 }
 
