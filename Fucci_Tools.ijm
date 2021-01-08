@@ -248,17 +248,18 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     	selectWindow("Substack"); 
     	rename("Track_"+gtrack-1+"_Substack");
     } else {}
-    waitForUser("A new track ("+gtrack+") has been added to the analysis. If it exists the substack has been renamed as Track_"+gtrack-1+"_Substack. Please select the tracking button and continue");
-    gtrack++;
+    
+    //gtrack++;
 	is_mother = true;//are we on a mother track or a daughter track?
  	daughter = "";//this is either a or b and is appended to gtrack in the results table
 	mitosis_frame = 0;//remember when the mitosis happened so we can go back to track the second daughter
 	mitosis = "";//forget this string
-    waitForUser("A new track ("+gtrack+") has been added to the analysis. Please select the tracking button and continue");
+    //waitForUser("A new track ("+gtrack+") has been added to the analysis. Please select the tracking button and continue");
     setSlice(1);
 	run("Colors...", "foreground=white background=white selection=green");
 	run("Overlay Options...", "stroke=green width=0 fill=none");
 	run("Remove Overlay");
+	waitForUser("A new track ("+gtrack+") has been added to the analysis. If it exists the substack has been renamed as Track_"+gtrack-1+"_Substack. Please select the tracking button and continue");
 }
 
 
