@@ -396,11 +396,11 @@ Dialog.create("Plotting parameters");
 			if (getResultString("Track", i) == toString(track_number[q])){	
 				image_id = getResultString("Image_ID",i);
 				plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
-				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
-				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
-				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
-				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
-				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));} else {cyan_profile = Array.concat(cyan_profile, 0);}
+				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));} else {green_profile = Array.concat(green_profile, 0);}
+				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));} else {red_profile = Array.concat(red_profile, 0);}
+				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));} else {fred_profile = Array.concat(fred_profile, 0);}
+				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));} else {bright_profile = Array.concat(bright_profile, 0);}
 				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
 				}
 		}
@@ -565,11 +565,11 @@ Dialog.create("Plotting parameters");
 			if (getResultString("Track", i) == toString(track_number[q])){	
 				image_id = getResultString("Image_ID",i);
 				plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
-				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
-				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
-				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
-				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
-				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));} else {cyan_profile = Array.concat(cyan_profile, 0);}
+				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));} else {green_profile = Array.concat(green_profile, 0);}
+				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));} else {red_profile = Array.concat(red_profile, 0);}
+				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));} else {fred_profile = Array.concat(fred_profile, 0);}
+				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));} else {bright_profile = Array.concat(bright_profile, 0);}
 				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
 				}
 		}
@@ -589,12 +589,13 @@ Dialog.create("Plotting parameters");
 			if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
 			if (check_plot[5]==1) {normalise(cilia_length);}
 
-			if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
-			if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
-			if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
-			if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
-			if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
-			if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
+//resample the data
+			cyan_profile = Array.resample(cyan_profile,100);
+			green_profile = Array.resample(green_profile,100);
+			red_profile = Array.resample(red_profile,100);
+			fred_profile = Array.resample(fred_profile,100);
+			bright_profile = Array.resample(bright_profile,100);
+			cilia_length = Array.resample(cilia_length,100);
 		
 //write the data to the new table
 			for (i=0; i<int_plot_time.length; i++) {
@@ -885,11 +886,11 @@ setBatchMode(true);
 			if (getResultString("Track", i) == toString(track_number[q])){	
 				image_id = getResultString("Image_ID",i);
 				plot_time = Array.concat(plot_time, getResult("Frame",i)*time_step);
-				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));}
-				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));}
-				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));}
-				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));}
-				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));}
+				if (pro_channel_order[0]>0) {cyan_profile = Array.concat(cyan_profile, getResult("Ch"+pro_channel_order[0]+"_Mean",i));} else {cyan_profile = Array.concat(cyan_profile, 0);}
+				if (pro_channel_order[1]>0) {green_profile = Array.concat(green_profile, getResult("Ch"+pro_channel_order[1]+"_Mean",i));} else {green_profile = Array.concat(green_profile, 0);}
+				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));} else {red_profile = Array.concat(red_profile, 0);}
+				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));} else {fred_profile = Array.concat(fred_profile, 0);}
+				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));} else {bright_profile = Array.concat(bright_profile, 0);}
 				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
 				}
 		}
@@ -911,12 +912,12 @@ setBatchMode(true);
 			if (check_plot[5]==1) {normalise(cilia_length);}
 
 //resample the data
-			if (pro_channel_order[0]>0) {cyan_profile = Array.resample(cyan_profile,100);}
-			if (pro_channel_order[1]>0) {green_profile = Array.resample(green_profile,100);}
-			if (pro_channel_order[2]>0) {red_profile = Array.resample(red_profile,100);}
-			if (pro_channel_order[3]>0) {fred_profile = Array.resample(fred_profile,100);}
-			if (pro_channel_order[4]>0) {bright_profile = Array.resample(bright_profile,100);}
-			if (check_plot[5]==1) {cilia_length = Array.resample(cilia_length,100);}
+			cyan_profile = Array.resample(cyan_profile,100);
+			green_profile = Array.resample(green_profile,100);
+			red_profile = Array.resample(red_profile,100);
+			fred_profile = Array.resample(fred_profile,100);
+			bright_profile = Array.resample(bright_profile,100);
+			cilia_length = Array.resample(cilia_length,100);
 		
 //write the data to the new table
 			for (i=0; i<int_plot_time.length; i++) {
