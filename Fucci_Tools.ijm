@@ -367,9 +367,14 @@ Dialog.create("Plotting parameters");
 
 //START WITH INDIVIDUAL PLOTS
 	if (type_plot[0]==true) {
-//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
+
 		setBatchMode(true);
+
+//get the track numbers in an array to use as the index - skips mother track or daughter track if selected
+ 
+		track_number = list_no_repeats_skip ("Results", "Track");
 		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
+		track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");
 
 //loop through each track and make the intensity plot for the individual plots
 		for (q=0; q<track_number.length; q++) {
@@ -1406,6 +1411,9 @@ function list_no_repeats (table, heading) {
 function list_no_repeats_skip (table, heading, skip) {
 //Returns an array of the entries in a column without repeats to use as an index
 
+//make the no_repeats array
+	no_repeats = newArray();
+
 //Check whether the table exists
 	if (isOpen(table)) {
 
@@ -1414,10 +1422,16 @@ function list_no_repeats_skip (table, heading, skip) {
 		var done = false; // used to prematurely terminate loop
 		for (i=0; i<nResults && !done; i++) {
 			if (getResult(skip,i) == 0) {
-			no_repeats = newArray(getResultString(heading, i));
+			no_repeats = Array.concat(no_repeats, getResultString(heading, i));
 			done = true;
 		} else {}
 		}
+
+//exit if there are no tracks to plot
+		if (no_repeats.length < 1) {
+			exit("There are no tracks that meet your criteria to plot");
+		}
+
 		
 		for (i=0; i<nResults; i++) {
 			occurence = getResultString(heading, i);
