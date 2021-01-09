@@ -329,6 +329,9 @@ Dialog.create("Plotting parameters");
 	Dialog.addNumber("Brightfield =", pro_channel_order[4]);
 	//Dialog.addString("Normalise?", pro_norm);
 	Dialog.addCheckbox("Print to Log?", false);
+	Dialog.addMessage("Choose the tracks you wish to plot:");
+	Dialog.addCheckbox("Plot mothers?", false);
+	Dialog.addCheckbox("Plot daugters?", true);
 	Dialog.addMessage("Choose the features you wish to plot:");
   	Dialog.addCheckboxGroup(3,2,check_labels,check_defaults);
   	Dialog.addMessage("Choose the plot types you wish to see:");
@@ -342,6 +345,8 @@ Dialog.create("Plotting parameters");
 	cbright = Dialog.getNumber();
 	norm_c = pro_norm//Dialog.getString();
 	log_p = Dialog.getCheckbox();
+	plot_m = Dialog.getCheckbox();
+	plot_d = Dialog.getCheckbox();
 
 	for (i=0; i<check_defaults.length; i++) {
 		 doplot = Dialog.getCheckbox();
@@ -370,14 +375,23 @@ Dialog.create("Plotting parameters");
 
 		setBatchMode(true);
 
+//add a daughter column to the resutls table
+		for (i=0; i<nResults; i++) {
+			if (getResult("Mother?", i) == 0) {
+				setResult("Daughter?", i, 1);		
+			}
+		}
+
 //get the track numbers in an array to use as the index - skips mother track or daughter track if selected
- 		if () {
+ 		if (plot_m = true && plot_d = true) {
 			track_number = list_no_repeats_skip ("Results", "Track");//plot all
- 		} else if () {
+ 		} else if (plot_m = false && plot_d = true) {
 			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
- 		} else {
-			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip daughter
- 		}
+ 		} else if (plot_m = true && plot_d = false){
+			track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");//skip daughter
+ 		} else if (plot_m = false && plot_d = false){
+ 			exit("No tracks selected for plotting"
+ 			}
 
 //loop through each track and make the intensity plot for the individual plots
 		for (q=0; q<track_number.length; q++) {
