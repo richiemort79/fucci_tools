@@ -383,14 +383,14 @@ Dialog.create("Plotting parameters");
 		}
 
 //get the track numbers in an array to use as the index - skips mother track or daughter track if selected
- 		if (plot_m = true && plot_d = true) {
-			track_number = list_no_repeats_skip ("Results", "Track");//plot all
- 		} else if (plot_m = false && plot_d = true) {
+ 		if (plot_m == true && plot_d == true) {
+			track_number = list_no_repeats ("Results", "Track");//plot all
+ 		} else if (plot_m == false && plot_d == true) {
 			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
- 		} else if (plot_m = true && plot_d = false){
+ 		} else if (plot_m == true && plot_d == false){
 			track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");//skip daughter
- 		} else if (plot_m = false && plot_d = false){
- 			exit("No tracks selected for plotting"
+ 		} else if (plot_m == false && plot_d == false){
+ 			exit("No tracks selected for plotting");
  			}
 
 //loop through each track and make the intensity plot for the individual plots
@@ -540,10 +540,17 @@ Dialog.create("Plotting parameters");
 //make the arrays and results table for the interpolated plots
 	if (type_plot[2]==true) {
 		setBatchMode(true);
-//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
 
-		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
-		//data_count = 0;
+//get the track numbers in an array to use as the index - skips mother track or daughter track if selected
+ 		if (plot_m == true && plot_d == true) {
+			track_number = list_no_repeats ("Results", "Track");//plot all
+ 		} else if (plot_m == false && plot_d == true) {
+			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
+ 		} else if (plot_m == true && plot_d == false){
+			track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");//skip daughter
+ 		} else if (plot_m == false && plot_d == false){
+ 			exit("No tracks selected for plotting");
+ 			}
 		
 		//interpolated data will have 100 interpolated time points
 		int_plot_time = newArray("0");
@@ -737,11 +744,21 @@ Dialog.create("Plotting parameters");
 }
 		
 //THEN INTERPOLATED CILIA PLOTS
-	if (type_plot[3] == true && check_plot[5]==1){	
-setBatchMode(true);
-		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
+	if (type_plot[3] == true && check_plot[5]==1){
+			
+		setBatchMode(true);
 
-		
+//get the track numbers in an array to use as the index - skips mother track or daughter track if selected
+ 		if (plot_m == true && plot_d == true) {
+			track_number = list_no_repeats ("Results", "Track");//plot all
+ 		} else if (plot_m == false && plot_d == true) {
+			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
+ 		} else if (plot_m == true && plot_d == false){
+			track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");//skip daughter
+ 		} else if (plot_m == false && plot_d == false){
+ 			exit("No tracks selected for plotting");
+ 			}
+	
 //draws the interpolated cilia length table
     	requires("1.41g");
 		title1 = "Interpolated Cilia Length";
@@ -853,11 +870,19 @@ setBatchMode(true);
 
 //make the arrays and results table for the interpolated plots
 	if (type_plot[4]==true) {
+		
 		setBatchMode(true);
-//get the track numbers in an array to use as the index - skips mother track which are not comlete mitoses
 
-		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
-		//data_count = 0;
+//get the track numbers in an array to use as the index - skips mother track or daughter track if selected
+ 		if (plot_m == true && plot_d == true) {
+			track_number = list_no_repeats ("Results", "Track");//plot all
+ 		} else if (plot_m == false && plot_d == true) {
+			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
+ 		} else if (plot_m == true && plot_d == false){
+			track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");//skip daughter
+ 		} else if (plot_m == false && plot_d == false){
+ 			exit("No tracks selected for plotting");
+ 			}
 		
 		//interpolated data will have 100 interpolated time points
 		int_plot_time = newArray("0");
