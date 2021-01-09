@@ -371,10 +371,13 @@ Dialog.create("Plotting parameters");
 		setBatchMode(true);
 
 //get the track numbers in an array to use as the index - skips mother track or daughter track if selected
- 
-		track_number = list_no_repeats_skip ("Results", "Track");
-		track_number = list_no_repeats_skip ("Results", "Track", "Mother?");
-		track_number = list_no_repeats_skip ("Results", "Track", "Daughter?");
+ 		if () {
+			track_number = list_no_repeats_skip ("Results", "Track");//plot all
+ 		} else if () {
+			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip mothers
+ 		} else {
+			track_number = list_no_repeats_skip ("Results", "Track", "Mother?");//skip daughter
+ 		}
 
 //loop through each track and make the intensity plot for the individual plots
 		for (q=0; q<track_number.length; q++) {
