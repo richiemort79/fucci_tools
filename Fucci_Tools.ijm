@@ -246,7 +246,7 @@ macro "Add Track Action Tool - CfffD00D01D02D03D04D05D06D07D0bD0cD0dD0eD0fD10D11
     counter=1;
     if (isOpen("Substack")) { 
     	selectWindow("Substack"); 
-    	rename("Track_"+gtrack-1+"_Substack");
+    	rename("Track_"+(gtrack-1)+daughter+"_Substack");
     } else {}
     
     //gtrack++;
