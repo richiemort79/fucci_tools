@@ -611,7 +611,7 @@ Dialog.create("Plotting parameters");
 				if (pro_channel_order[2]>0) {red_profile = Array.concat(red_profile, getResult("Ch"+pro_channel_order[2]+"_Mean",i));} else {red_profile = Array.concat(red_profile, 0);}
 				if (pro_channel_order[3]>0) {fred_profile = Array.concat(fred_profile, getResult("Ch"+pro_channel_order[3]+"_Mean",i));} else {fred_profile = Array.concat(fred_profile, 0);}
 				if (pro_channel_order[4]>0) {bright_profile = Array.concat(bright_profile, getResult("Ch"+pro_channel_order[4]+"_Mean",i));} else {bright_profile = Array.concat(bright_profile, 0);}
-				if (check_plot[5]==1) {cilia_length = Array.concat(cilia_length, getResult("Length",i));}		
+				cilia_length = Array.concat(cilia_length, getResult("Length",i));	
 				}
 		}
 	
@@ -621,14 +621,14 @@ Dialog.create("Plotting parameters");
 			if (pro_channel_order[2]>0) {smooth(red_profile);}
 			if (pro_channel_order[3]>0) {smooth(fred_profile);}
 			if (pro_channel_order[4]>0) {smooth(bright_profile);}
-			if (check_plot[5]==1) {smooth(cilia_length);}
+			smooth(cilia_length);
 
 //normalise the data for plotting    
     	   	if (pro_channel_order[0] == 0) {} else if (substring(norm_c, 0, 1) == 1) {normalise(cyan_profile);}
 			if (pro_channel_order[1] == 0) {} else if (substring(norm_c, 1, 2) == 1) {normalise(green_profile);}
 			if (pro_channel_order[2] == 0) {} else if (substring(norm_c, 2, 3) == 1) {normalise(red_profile);}
 			if (pro_channel_order[3] == 0) {} else if (substring(norm_c, 3, 4) == 1) {normalise(fred_profile);}
-			if (check_plot[5]==1) {normalise(cilia_length);}
+			normalise(cilia_length);
 
 //resample the data
 			cyan_profile = Array.resample(cyan_profile,100);
