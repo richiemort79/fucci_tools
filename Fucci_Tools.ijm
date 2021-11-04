@@ -525,18 +525,12 @@ Dialog.create("Plotting parameters");
 			selectWindow("Clipboard");
 			rename("Normalised Intensity Plot Track "+track_number[q]);
 
-
 			}		
 		run("Images to Stack", "name=[Individual Plots Stack] title=[] use");
-		//run("Duplicate...", "title=Duplicate");
-		//selectWindow("Duplicate");
 		Stack.getDimensions(width, height, channels, slices, frames);
-		//print(frames);
-		//print(slices);
 		setBatchMode(false);	
 		
 		if (type_plot[1] == true) {
-			//run("Duplicate...", "title=Duplicate duplicate");
 			run("Canvas Size...", "width=483 height=275 position=Top-Left");
 			ncols = round((slices/4)+1);
 			nrows = 4;
