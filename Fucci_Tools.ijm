@@ -81,16 +81,16 @@ var check_plot = newArray(0,0,0,0,0,0);
 
 //Variables for plot types
 var type_labels = newArray("Single","Montage","Interpolated Mean","Interpolated Cilia Length","Interpolated Fucci with Cilia Overlay");
-var type_defaults = newArray(true,false,true,true,true);
+var type_defaults = newArray(false,true,false,false,false);
 var type_plot = newArray(0,0,0,0,0);
 
 macro "Initialize Action Tool - CeefD25D4cD52Dd6CdddD18CfffD00D01D02D03D0cD0dD0eD0fD10D11D1eD1fD20D27D28D2fD30D35D3aD3fD44D4bD53D5cD72D82Da3DacDb4DbbDc0Dc5DcaDcfDd0Dd7DdfDe0De1DeeDefDf0Df1Df2Df3DfcDfdDfeDffCcccDd4CfffD26D39D62D7dD92Db3Dc4Dc6Dd8CdefD22D2dDd2DddCaaaDe7CeffD04D0bD29D37D38D40D45D4fD54D55D64D6cD73D7bD83D8aD8dD99D9cDa8Db0DbfDc9Df4DfbCdefD5bD6aD6bDa9Db7Db8CcdfD14D41Db1CfffD12D1dD21D2eD34D36D43D63D93Dd1DdeDe2DedCdefD05D0aD13D1cD31D3eD50D5fDa0DafDc1DceDe3DecDf5DfaC58cD97CeefD46D47D56D65D84CdeeD9dCbdfDebCbcdDadCeefD49D4aD58D59D5aD67D68D69D6dD7cD8cDa5Da6Db5Db6Dc7Dc8CcefD06D09D60D6fD90D9fDf6Df9C58cD75D76D77D78D79D86D87D88CeefD48D57D66D94D95Da4CddeD24D42Dd5CcdeD3dCbbcD3cDe6C9aaDbdCeeeD2aCbdfD07D08D70D7fD80D8fDf7Df8CaceD96CeffD3bCdddD71CccdDe5CabbDe9C999D7eD8eCdefD8bD9aD9bDaaDabDb9DbaCcdfD1bDe4CbcdDcdDdcCddeD15D51CcdeD1aDa1Dc2Dd3CbbdDaeCaabD9eDdbCeeeDa2CbdeDa7DbeCdddD17D19D81CccdDc3CaabD6eC9aaDccCdefD23D32CcdfD4eCbcdDdaCcdeD2cCaaaDe8CbceD74D85CddeD16D33D61D91CcddD5dDb2CbbbD4dCbcdD5eDeaCdeeDbcDcbDd9CccdD2b"
 {
 //check there is an image open and if not exit
-image_list = getList("image.titles");
-if (image_list.length == 0) {
+	image_list = getList("image.titles");
+	if (image_list.length == 0) {
     exit("There are no images open");
-}
+	}
 
 //Must be set up for black background
 run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
@@ -381,11 +381,11 @@ Dialog.create("Plotting parameters");
 	}
 
 //START WITH INDIVIDUAL PLOTS
-	if (type_plot[0]==true) {
+	if (type_plot[0]==true || type_plot[1]==true) {
 
 		setBatchMode(true);
 
-//add a daughter column to the resutls table
+//add a daughter column to the results table
 		for (i=0; i<nResults; i++) {
 			if (getResult("Mother?", i) == 0) {
 				setResult("Daughter?", i, 1);		
@@ -533,7 +533,10 @@ Dialog.create("Plotting parameters");
 		Stack.getDimensions(width, height, channels, slices, frames);
 		//print(frames);
 		//print(slices);
+		setBatchMode(false);	
+		
 		if (type_plot[1] == true) {
+			//run("Duplicate...", "title=Duplicate duplicate");
 			run("Canvas Size...", "width=483 height=275 position=Top-Left");
 			ncols = round((slices/4)+1);
 			nrows = 4;
@@ -541,8 +544,13 @@ Dialog.create("Plotting parameters");
 			selectWindow("Montage");
 			rename("Individual Plots Montage");	
 			}
-		setBatchMode(false);	
+
+		if (type_plot[0] == false) {	
+			selectWindow("Individual Plots Stack");
+			run("Close");
+		
 		}
+	}
 
 
 //THEN INTERPOLATED PLOTS
@@ -894,14 +902,14 @@ Dialog.create("Plotting parameters");
  			exit("No tracks selected for plotting");
  			}
 		
-		//interpolated data will have 100 interpolated time points
+//interpolated data will have 100 interpolated time points
 		int_plot_time = newArray("0");
 		
 		for (i=1; i<100; i++) {
 			int_plot_time = Array.concat(int_plot_time, 1+int_plot_time[i-1]);
 		}
 
-		//Array.print(int_plot_time);
+//Array.print(int_plot_time);
 //draws the interpolated tracking table
     	requires("1.41g");
 		title1 = "Normalised Interpolated Data";
