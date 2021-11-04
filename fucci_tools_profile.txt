@@ -9,7 +9,7 @@ pro_crop = 50
 pro_track = true
 pro_track_step = 1
 pro_view2 = 10000
-pro_diameter = 50
+pro_diameter = 10
 
 #Profile file to anlayze Arl13bCerulean-Fucci2a_Test_Stack.tif
 
