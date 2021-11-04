@@ -2,13 +2,14 @@ pro_time_step = 20
 pro_scale = 0.42
 pro_number_channels = 4
 pro_channels = Cyan,Green,Red,Magenta,Grays
-pro_channel_order = 12304
-pro_view = 11100
+pro_channel_order = 42103
+pro_view = 11000
 pro_norm = 11111
 pro_crop = 50
 pro_track = true
 pro_track_step = 1
 pro_view2 = 10000
+pro_diameter = 50
 
 #Profile file to anlayze Arl13bCerulean-Fucci2a_Test_Stack.tif
 
