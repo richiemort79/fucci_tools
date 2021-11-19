@@ -112,7 +112,7 @@ run("Options...", "iterations=1 count=1 black edm=Overwrite do=Nothing");
 //Get location of fucci_tools_profile and load the settings
 	profile_path = getDirectory("macros");
 	get_profile(profile_path);
-	print(pro_diameter);
+	//print(pro_diameter);
 	
 	//print(pro_track+"!!"pro_track);
 
