@@ -357,7 +357,7 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 	cred = Dialog.getNumber();
 	cfred = Dialog.getNumber();
 	cbright = Dialog.getNumber();
-	norm_c = pro_norm//Dialog.getString();
+	norm_c = pro_norm;//Dialog.getString();
 	log_p = Dialog.getCheckbox();
 	plot_m = Dialog.getCheckbox();
 	plot_d = Dialog.getCheckbox();
