@@ -1120,9 +1120,24 @@ macro "Normalised Intensity Plot Action Tool - CfffD5dCf01D38CfffD00D01D02D03D04
 
 macro "Reanalyze Action Tool - Cad8DccCd54D9bCed8D88C676DdfC7adDd2Cbc5D99CefeD1cD1eDa1Db1Dc1Dd1De1C666D07D08D09D0aD0bD0cD0dD2fD3fD4fD5fD6fD7fD8fD9fDa0DafDb0DbfDc0DcfDd0DefDf2Df3Df4Df5Df6Df7Df8Df9DfaDfbDfcDfdDfeCdd8D37Caa5D7cCfe9D68C8c6D5bCbceDa7Ccc4D73CfffD11D15D16D17D18D19D1aD21D61D81D91C665D02D03D04D05D06D0eD1fD20D30D40D50D60D70D80D90C79cDd3Cf55D54Cff8D64C8b6D7bC9bdDd7Cac8DbdCfffD12D13D14D1bD31D41D51D71CcdaDb8Cd85D8cCffaD26D48C8c7DdbCdedD4eD5eD6eD7eD8eD9eDceDe7De8DeaDebDecDeeCcd7Dd8C565D01D10De0Df1Cad8D4cD6aCb85D79Cee8D23D36D47D58C8bdDa3C9c7D5cCefeD1dCcd9D2bCb96DdaCeeaD29CcddDa8Cdd5D75D98C8adDb5Cf66D66Cee9D25D38D49C9beDa5Dc4Cac8D5dDddCdedD2eD3eDe3De4De5De6DedCd96Dd9CffbD2aC9c7D3bCdd7Dc9Cad8DcdCe64D55Cee8D52C8adD92Dd4C9c7D7aCcd9Da9Caa7D9dCff9D22D24D46CaceDa4Dc6Ccc5D72C7adDc3Cf65D43Cff8D62C9beD94C9c8D4bDdcCdecDbeCe85DcaCffaD28Cdd7D33D57D86Cbd9D4dCc85D7dC9beDb4Cbc7D59Ccd9D84Cca7D6dCdedDe2Cdd6D74CabbD83Ce76DadCabeDd6Cbc8D8dCea5DbaCdedDdeCed7D76Cac8D3dCe54D9cCfd8D44C8adDb2Cbb7D97Cde8DaaCaa6D9aCff9D27Ccc5Db9C79dDb3Ce55D78CabdDb7Dc7Cd95D53Cb85DbbC9bdDc5C9c7D3cD6bDbcCbdaD2dCba7D8bC9bdD95Cf76D42Ce96D65Ced7D56Cad8D6cCd74DabCee8D34D45C8aeDc2C9c7D5aCdd8D39C9b7DcbCcc5D85C8adD93Dd5Ce75D77CdecDe9Ce96D67Cad9D2cCd76D89C9beDa2Cdd9Dc8Cca7DacCbdfDa6Cdd6D87CbccD96Cf77D8aCaceDb6Ceb6D32CeedDaeCdd7D35C9c7D69Cbe9D4aCde9D3aCaceD82Cee7D63"
 {
-//re run an anlysis using the x,y coordinates in the results table either with tweaked paramteres or on a processed version of original data
+//re run an analysis using the x,y coordinates in the results table e.g. either with tweaked parameters or on a processed version of the original data
 //requires an open results table and the corresponding image
 //first run intialise and tweak parameters or load a processed dataset
+
+//check the imageIds match
+	testID = getTitle();
+	dataID = getResultString("Image_ID", 1);
+	
+	if (testID == dataID) {}
+		else {
+			choice = getBoolean("The Image name does not match the ImageID in the results table, continue?");
+			}
+	
+	if (choice == 0) {exit("Please load matching datasets");} 
+		else {
+			if (choice == 1) {}
+		}
+
 
 //get dimensions
     Stack.getDimensions(width, height, channels, slices, frames);		
@@ -1194,27 +1209,27 @@ macro "Reanalyze Action Tool - Cad8DccCd54D9bCed8D88C676DdfC7adDd2Cbc5D99CefeD1c
 	//	print(f,(number++)+"\t"+Image+"\t"+track+"\t"+is_mother+"\t"+(frame)+"\t"+x+"\t"+y+"\t"+mean_intensities[0]+"\t"+mean_intensities[1]+"\t"+mean_intensities[2]+"\t"+mean_intensities[3]+"\t"+mean_intensities[4]+"\t"+com_roi_x+"\t"+com_roi_y+"\t"+dist+"\t"+c_length+"\t"+c_f_length+"\t"+c_straightness+"\t"+c_kurtosis+"\t"+c_skewness+"\t"+c_angle);
 	
 	print(f,
-    (number++) + "\t" + 
-    (getResultString("Image_ID", i)) + "\t" + 
-    (getResultString("Track", i)) + "\t" + 
-    (getResult("Mother?", i)) + "\t" + 
-    (getResult("Frame", i)) + "\t" + 
-    (old_x_values[i]) + "\t" + 
-    (old_y_values[i]) + "\t" + 
-    (c_one_means[i]) + "\t" + 
-    (c_two_means[i]) + "\t" + 
-    (c_three_means[i]) + "\t" + 
-    (c_four_means[i]) + "\t" + 
-    (c_five_means[i]) + "\t" + 
-    (getResult("Cilia_COMX", i)) + "\t" + 
-    (getResult("Cilia_COMY", i)) + "\t" + 
-    (getResult("Distance_to_Cilia_(um)", i)) + "\t" + 
-    (getResult("Length", i)) + "\t" + 
-    (getResult("Feret", i)) + "\t" + 
-    (getResult("Straightness", i)) + "\t" + 
-    (getResult("Kurt", i)) + "\t" + 
-    (getResult("Skew", i)) + "\t" + 
-    (getResult("Angle", i)));
+    number++ + "\t" + 
+    getResultString("Image_ID", i) + "\t" + 
+    getResultString("Track", i) + "\t" + 
+    getResult("Mother?", i) + "\t" + 
+    getResult("Frame", i) + "\t" + 
+    old_x_values[i] + "\t" + 
+    old_y_values[i] + "\t" + 
+    c_one_means[i] + "\t" + 
+    c_two_means[i] + "\t" + 
+    c_three_means[i] + "\t" + 
+    c_four_means[i] + "\t" + 
+    c_five_means[i] + "\t" + 
+    getResult("Cilia_COMX", i) + "\t" + 
+    getResult("Cilia_COMY", i) + "\t" + 
+    getResult("Distance_to_Cilia_(um)", i) + "\t" + 
+    getResult("Length", i) + "\t" + 
+    getResult("Feret", i) + "\t" + 
+    getResult("Straightness", i) + "\t" + 
+    getResult("Kurt", i) + "\t" + 
+    getResult("Skew", i) + "\t" + 
+    getResult("Angle", i));
 	
 	
 	}
@@ -1364,68 +1379,94 @@ function measure_cilia() {
 
 function convert_to_mdf2(){
 
-//check how many channels there are with min and max values in Ch
-
-chans = newArray("red","green","blue","bright");
-nchans = 0;
-for (z=0; z<nResults; z++) {
-	if (getResult("Ch", z)>nchans) {
-		nchans = getResult("Ch", z);
-	}
-}
-
-//close the log
-if (isOpen("Log")) {
-	selectWindow("Log");
-	run("Close");
-}
-
 //get the track numbers in an array to use as the index
-	track_number = newArray();
-	t_num = 0;
-
-	for (w=0; w<nResults; w++) {
-		if ((getResult("Track", w) > t_num)||(getResult("Track", w) < t_num)) {
-			t_num = getResult("Track", w);
-			track_number = Array.concat(track_number, t_num);	
+	track_number = list_no_repeats ("Results", "Track");
+	mothers_and_daughters = newArray();
+	
+	for (i = 0; i < track_number.length; i++) {
+		track_string = track_number[i];
+		len = track_string.length;
+		key = substring(track_string,len-1);
+	
+		if (key == "a" || key== "b") {
+			mothers_and_daughters = Array.concat(mothers_and_daughters,0);
+			} else {
+			mothers_and_daughters = Array.concat(mothers_and_daughters,1);
 			}
-		}
-
+	}
+	
+//close the log
+	if (isOpen("Log")) {
+		selectWindow("Log");
+		run("Close");
+	}
+	
 	print("MTrackJ 1.2.0 Data File");
 	print("Assembly 1");
 
+//write the mothers to cluster 1
 
-//write to cluster 1
-
-	print("Cluster 1");
+	print("Cluster 1 (Mothers)");
 
 	for (i=0; i<track_number.length; i++){
-		print("Track "+track_number[i]);
+		if (mothers_and_daughters[i]==1) {
+			print("Track "+i+1);
+		}
+		count=0;
+		for (j=0; j<nResults; j++) {
+			
+			if ((getResultString("Track", j) == track_number[i])&&(getResult("Mother?", j)==1)){
+				count = count+1;
+
+				x = getResult("X", j);
+				y = getResult("Y", j);
+				z =	1;
+				t = getResult("Frame", j);
+				c = 1;
+				ch1 = getResult("Ch1_Mean", j);
+				ch2 = getResult("Ch2_Mean", j);
+				ch3 = getResult("Ch3_Mean", j);
+				ch4 = getResult("Ch4_Mean", j);
+				ch5 = getResult("Ch5_Mean", j);
+						
+				print("Point "+count+" "+x+" "+y+" "+z+" "+t+" "+c+" "+ch1+" "+ch2+" "+ch3+" "+ch4);
+				}
+			}
+		}
+		
+//write the daughters to cluster 2
+
+	print("Cluster 2 (Daughters)");
+
+	for (i=0; i<track_number.length; i++){
+		if (mothers_and_daughters[i]==0) {
+			print("Track "+i+1);
+		}
 		count=0;
 		for (j=0; j<nResults; j++) {
 		
-			if ((getResult("Track", j) == track_number[i])&&(getResult("Ch", j)==1)){
+			if ((getResultString("Track", j) == track_number[i])&&(getResult("Mother?", j)==0)){
 				count = count+1;
 
-				x = getResult("XM", j);
-				y = getResult("YM", j);
-				z =	getResult("Slice", j);
+				x = getResult("X", j);
+				y = getResult("Y", j);
+				z =	1;
 				t = getResult("Frame", j);
-				c = getResult("Ch", j);
-
-				for (k=0; k<nchans; k++) {
-					chans[k]= getResult("RawIntDen", j+k);
-					}
-				
-				//class = getResultString("Class", j);			
-				print("Point "+count+" "+x+" "+y+" "+z+" "+t+" "+c+" "+chans[0]+" "+chans[1]+" "+chans[2]+" "+chans[3]);
+				c = 1;
+				ch1 = getResult("Ch1_Mean", j);
+				ch2 = getResult("Ch2_Mean", j);
+				ch3 = getResult("Ch3_Mean", j);
+				ch4 = getResult("Ch4_Mean", j);
+				ch5 = getResult("Ch5_Mean", j);
 			
+				print("Point "+count+" "+x+" "+y+" "+z+" "+t+" "+c+" "+ch1+" "+ch2+" "+ch3+" "+ch4);
 				}
-		
 			}
 		}
+		
 	print("End of MTrackJ Data File");
 }
+
 
 function crop_new (image, x, y, size){
 //Interactice crop macro
